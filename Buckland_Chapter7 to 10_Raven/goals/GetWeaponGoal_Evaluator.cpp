@@ -1,6 +1,6 @@
 #include "GetWeaponGoal_Evaluator.h"
 #include "../Raven_ObjectEnumerations.h"
-#include "misc/Stream_Utility_Functions.h"
+#include "../../Common/misc/Stream_Utility_Functions.h"
 #include "../Raven_Game.h"
 #include "../Raven_Map.h"
 #include "Goal_Think.h"
@@ -70,6 +70,8 @@ void GetWeaponGoal_Evaluator::RenderInfo(Vector2D Position, Raven_Bot* pBot)
     s="RL: "; break;
   case type_shotgun:
     s="SG: "; break;
+  case type_grenade:
+	s="GR: "; break;
   }
   
   gdi->TextAtPos(Position, s + ttos(CalculateDesirability(pBot), 2));

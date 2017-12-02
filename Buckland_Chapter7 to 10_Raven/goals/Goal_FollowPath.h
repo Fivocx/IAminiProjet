@@ -9,7 +9,7 @@
 //
 //  Desc:
 //-----------------------------------------------------------------------------
-#include "Goals/Goal_Composite.h"
+#include "../../Common/Goals/Goal_Composite.h"
 #include "Raven_Goal_Types.h"
 #include "../Raven_Bot.h"
 #include "../navigation/Raven_PathPlanner.h"

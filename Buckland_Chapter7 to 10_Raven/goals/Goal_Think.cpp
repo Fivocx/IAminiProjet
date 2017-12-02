@@ -1,8 +1,8 @@
 #include "Goal_Think.h"
 #include <list>
-#include "misc/Cgdi.h"
+#include "../../Common/misc/Cgdi.h"
 #include "../Raven_ObjectEnumerations.h"
-#include "misc/utils.h"
+#include "../../Common/misc/utils.h"
 #include "../lua/Raven_Scriptor.h"
 
 #include "Goal_MoveToPosition.h"
@@ -31,6 +31,7 @@ Goal_Think::Goal_Think(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_thi
   double ShotgunBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
   double RocketLauncherBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
   double RailgunBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
+  double GrenadeBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
   double ExploreBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
   double AttackBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
 
@@ -44,6 +45,8 @@ Goal_Think::Goal_Think(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_thi
                                                      type_rail_gun));
   m_Evaluators.push_back(new GetWeaponGoal_Evaluator(RocketLauncherBias,
                                                      type_rocket_launcher));
+  m_Evaluators.push_back(new GetWeaponGoal_Evaluator(GrenadeBias,
+													 type_grenade));
 }
 
 //----------------------------- dtor ------------------------------------------
