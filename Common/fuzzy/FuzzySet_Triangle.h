@@ -10,8 +10,8 @@
 //          shape and can be defined by a mid point, a left displacement and a
 //          right displacement. 
 //-----------------------------------------------------------------------------
-#include "fuzzy/FuzzySet.h"
-#include "misc/utils.h"
+#include "../../Common/fuzzy/FuzzySet.h"
+#include "../../Common/misc/utils.h"
 
 
 

@@ -10,8 +10,8 @@
 //          maximum value this variable can accept is *any* value greater than 
 //          the midpoint.
 //-----------------------------------------------------------------------------
-#include "fuzzy/FuzzySet.h"
-#include "misc/utils.h"
+#include "../../Common/fuzzy/FuzzySet.h"
+#include "../../Common/misc/utils.h"
 
 
 

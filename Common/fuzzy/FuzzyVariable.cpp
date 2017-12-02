@@ -1,11 +1,11 @@
-#include "fuzzy/fuzzyvariable.h"
-#include "fuzzy/fuzzyoperators.h"
-#include "fuzzy/FuzzySet_triangle.h"
-#include "fuzzy/FuzzySet_LeftShoulder.h"
-#include "fuzzy/FuzzySet_RightShoulder.h"
-#include "fuzzy/FuzzySet_Singleton.h"
-#include "fuzzy/FzSet.h"
-#include "misc/utils.h"
+#include "../../Common/fuzzy/fuzzyvariable.h"
+#include "../../Common/fuzzy/fuzzyoperators.h"
+#include "../../Common/fuzzy/FuzzySet_triangle.h"
+#include "../../Common/fuzzy/FuzzySet_LeftShoulder.h"
+#include "../../Common/fuzzy/FuzzySet_RightShoulder.h"
+#include "../../Common/fuzzy/FuzzySet_Singleton.h"
+#include "../../Common/fuzzy/FzSet.h"
+#include "../../Common/misc/utils.h"
 #include <cassert>
 #include <iostream>
 #include <algorithm>
@@ -29,6 +29,8 @@ FuzzyVariable::~FuzzyVariable()
 void FuzzyVariable::Fuzzify(double val)
 {    
   //make sure the value is within the bounds of this variable
+	if (val > m_dMaxRange)
+		val = m_dMaxRange;
   assert ( (val >= m_dMinRange) && (val <= m_dMaxRange) && 
            "<FuzzyVariable::Fuzzify>: value out of range");
 

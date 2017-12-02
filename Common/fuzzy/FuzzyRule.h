@@ -13,9 +13,9 @@
 //          
 //-----------------------------------------------------------------------------
 #include <vector>
-#include "Fuzzy/FuzzySet.h"
-#include "fuzzy/FuzzyOperators.h"
-#include "misc/utils.h"
+#include "../../Common/Fuzzy/FuzzySet.h"
+#include "../../Common/fuzzy/FuzzyOperators.h"
+#include "../../Common/misc/utils.h"
 
 
 class FuzzyRule
