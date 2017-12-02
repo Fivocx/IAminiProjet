@@ -3,7 +3,7 @@
 #include "../Raven_Bot.h"
 #include "../navigation/Raven_PathPlanner.h"
 
-#include "Messaging/Telegram.h"
+#include "../../Common/Messaging/Telegram.h"
 #include "..\Raven_Messages.h"
 
 #include "Goal_Wander.h"
@@ -29,6 +29,10 @@ int ItemTypeToGoalType(int gt)
   case type_rocket_launcher:
 
     return goal_get_rocket_launcher;
+
+  case type_grenade:
+
+	  return goal_get_grenade;
 
   default: throw std::runtime_error("Goal_GetItem cannot determine item type");
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Script/scriptor.h"
+#include "../../Common/script/Scriptor.h"
 
 #define script Raven_Scriptor::Instance()
 

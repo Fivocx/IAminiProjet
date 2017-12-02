@@ -14,7 +14,7 @@
 //            of 1 update-step
 //
 //-----------------------------------------------------------------------------
-#include "Triggers/Trigger_LimitedLifetime.h"
+#include "../../Common/Triggers/Trigger_LimitedLifetime.h"
 #include "../Raven_Bot.h"
 
 

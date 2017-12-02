@@ -2,7 +2,7 @@
 #define GOAL_EXPLORE_H
 #pragma warning (disable:4786)
 
-#include "Goals/Goal_Composite.h"
+#include "../../Common/Goals/Goal_Composite.h"
 #include "Raven_Goal_Types.h"
 
 

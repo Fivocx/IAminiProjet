@@ -2,7 +2,7 @@
 #define GOAL_ENUMERATIONS_H
 
 #include <string>
-#include "misc/TypeToString.h"
+#include "../../Common/misc/TypeToString.h"
 
 enum
 {
@@ -16,6 +16,7 @@ enum
   goal_get_health,
   goal_get_shotgun,
   goal_get_rocket_launcher,
+  goal_get_grenade,
   goal_get_railgun,
   goal_wander,
   goal_negotiate_door,
