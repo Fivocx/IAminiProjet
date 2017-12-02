@@ -132,6 +132,10 @@ public:
   void         Render();
   void         Update();
   bool         HandleMessage(const Telegram& msg);
+  Vector2D	   incrPosX();
+  Vector2D	   decrPosX();
+  Vector2D	   incrPosY();
+  Vector2D	   decrPosY();
   void         Write(std::ostream&  os)const{/*not implemented*/}
   void         Read (std::ifstream& is){/*not implemented*/}
 

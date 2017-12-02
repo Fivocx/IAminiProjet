@@ -162,7 +162,6 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
            break;
 
-
          case VK_UP:
 
            g_pRaven->AddBots(1); break;
@@ -176,6 +175,34 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
       }
 
       break;
+
+	case WM_KEYDOWN:
+	{
+		switch (wParam)
+		{
+		case 'W':
+
+			g_pRaven->ClickW();
+
+			break;
+		case 'A':
+
+			g_pRaven->ClickA();
+
+			break;
+		case 'S':
+
+			g_pRaven->ClickS();
+
+			break;
+		case 'D':
+
+			g_pRaven->ClickD();
+
+			break;
+		}
+	}
+	break;
 
 
     case WM_LBUTTONDOWN:

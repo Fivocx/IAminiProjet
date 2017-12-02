@@ -134,6 +134,8 @@ public:
 
   void        TogglePause(){m_bPaused = !m_bPaused;}
   
+  void ClickD();
+
   //this method is called when the user clicks the right mouse button.
   //The method checks to see if a bot is beneath the cursor. If so, the bot
   //is recorded as selected.If the cursor is not over a bot then any selected
@@ -146,6 +148,12 @@ public:
 
   //when called will release any possessed bot from user control
   void        ExorciseAnyPossessedBot();
+
+  void ClickW();
+
+  void ClickA();
+
+  void ClickS();
  
   //if a bot is possessed the keyboard is polled for user input and any 
   //relevant bot methods are called appropriately

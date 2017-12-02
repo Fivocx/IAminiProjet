@@ -280,6 +280,35 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
   }
 }
 
+Vector2D  Raven_Bot ::incrPosX() {
+
+	m_vPosition.x+=1;
+
+	return m_vPosition;
+
+}
+Vector2D  Raven_Bot::decrPosX() {
+
+	m_vPosition.x-=1;
+
+	return m_vPosition;
+
+}
+Vector2D  Raven_Bot::incrPosY() {
+
+	m_vPosition.y+=1;
+
+	return m_vPosition;
+
+}
+Vector2D  Raven_Bot::decrPosY() {
+
+	m_vPosition.y-=1;
+
+	return m_vPosition;
+
+}
+
 //------------------ RotateFacingTowardPosition -------------------------------
 //
 //  given a target position, this method rotates the bot's facing vector
