@@ -336,3 +336,8 @@ OpenCover/
 *.exe
 *.out
 *.app
+
+
+
+**/DebugLog.txt
+
