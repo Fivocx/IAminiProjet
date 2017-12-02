@@ -9,9 +9,9 @@
 //  Desc:   trigger class to define a button that sends a msg to a 
 //          specific entity when activated.
 //-----------------------------------------------------------------------------
-#include "Triggers/Trigger.h"
-#include "Messaging/MessageDispatcher.h"
-#include "misc/cgdi.h"
+#include "../Common/Triggers/Trigger.h"
+#include "../Common/Messaging/MessageDispatcher.h"
+#include "../Common/misc/cgdi.h"
 
 template <class entity_type>
 class Trigger_OnButtonSendMsg : public Trigger<entity_type>
