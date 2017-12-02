@@ -3,7 +3,7 @@
 
 #include <string>
 
-// test bobobobo
+// test bobobobo123123123
 enum 
 {
   type_wall,
