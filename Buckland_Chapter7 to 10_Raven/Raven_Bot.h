@@ -13,8 +13,8 @@
 #include <iosfwd>
 #include <map>
 
-#include "game/MovingEntity.h"
-#include "misc/utils.h"
+#include "../common/game/MovingEntity.h"
+#include "../Common/misc/utils.h"
 #include "Raven_TargetingSystem.h"
 
 

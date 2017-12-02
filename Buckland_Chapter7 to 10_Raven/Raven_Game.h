@@ -18,11 +18,11 @@
 #include <string>
 #include <list>
 
-#include "graph/SparseGraph.h"
+#include "../Common/graph/SparseGraph.h"
 #include "Raven_ObjectEnumerations.h"
-#include "2d/Wall2D.h"
-#include "misc/utils.h"
-#include "game/EntityFunctionTemplates.h"
+#include "../Common/2d/Wall2D.h"
+#include "../Common/misc/utils.h"
+#include "../Common/game/EntityFunctionTemplates.h"
 #include "Raven_Bot.h"
 #include "navigation/pathmanager.h"
 
@@ -98,6 +98,7 @@ public:
   void AddRailGunSlug(Raven_Bot* shooter, Vector2D target);
   void AddShotGunPellet(Raven_Bot* shooter, Vector2D target);
   void AddBolt(Raven_Bot* shooter, Vector2D target);
+  void AddGrenade(Raven_Bot* shooter, Vector2D target);
 
   //removes the last bot to be added
   void RemoveBot();

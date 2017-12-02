@@ -16,14 +16,14 @@
 #include <vector>
 #include <string>
 #include <list>
-#include "graph/SparseGraph.h"
-#include "2d/Wall2D.h"
-#include "triggers/Trigger.h"
+#include "../Common/graph/SparseGraph.h"
+#include "../Common/2d/Wall2D.h"
+#include "../Common/triggers/Trigger.h"
 #include "Raven_Bot.h"
-#include "Graph/GraphEdgeTypes.h"
-#include "Graph/GraphNodeTypes.h"
-#include "misc/CellSpacePartition.h"
-#include "triggers/TriggerSystem.h"
+#include "../Common/Graph/GraphEdgeTypes.h"
+#include "../Common/Graph/GraphNodeTypes.h"
+#include "../Common/misc/CellSpacePartition.h"
+#include "../Common/triggers/TriggerSystem.h"
 
 class BaseGameEntity;
 class Raven_Door;

@@ -1,25 +1,26 @@
 #include "Raven_Game.h"
 #include "Raven_ObjectEnumerations.h"
-#include "misc/WindowUtils.h"
-#include "misc/Cgdi.h"
+#include "../Common/misc/WindowUtils.h"
+#include "../Common/misc/Cgdi.h"
 #include "Raven_SteeringBehaviors.h"
 #include "lua/Raven_Scriptor.h"
 #include "navigation/Raven_PathPlanner.h"
-#include "game/EntityManager.h"
-#include "2d/WallIntersectionTests.h"
+#include "../Common/game/EntityManager.h"
+#include "../Common/2d/WallIntersectionTests.h"
 #include "Raven_Map.h"
 #include "Raven_Door.h"
 #include "Raven_UserOptions.h"
-#include "Time/PrecisionTimer.h"
+#include "../Common/Time/PrecisionTimer.h"
 #include "Raven_SensoryMemory.h"
 #include "Raven_WeaponSystem.h"
-#include "messaging/MessageDispatcher.h"
+#include "../Common/messaging/MessageDispatcher.h"
 #include "Raven_Messages.h"
 #include "GraveMarkers.h"
 
 #include "armory/Raven_Projectile.h"
 #include "armory/Projectile_Rocket.h"
 #include "armory/Projectile_Pellet.h"
+#include "armory/Projectile_Grenade.h"
 #include "armory/Projectile_Slug.h"
 #include "armory/Projectile_Bolt.h"
 
@@ -309,6 +310,18 @@ void Raven_Game::AddBolt(Raven_Bot* shooter, Vector2D target)
   #endif
 }
 
+//--------------------------- AddGrenade -----------------------------------------
+//-----------------------------------------------------------------------------
+void Raven_Game::AddGrenade(Raven_Bot* shooter, Vector2D target)
+{
+	Raven_Projectile* rp = new Projectile_Grenade(shooter, target);
+
+	m_Projectiles.push_back(rp);
+
+#ifdef LOG_CREATIONAL_STUFF
+	debug_con << "Adding a grenade " << rp->ID() << " at pos " << rp->Pos() << "";
+#endif
+}
 //------------------------------ AddRocket --------------------------------
 void Raven_Game::AddRocket(Raven_Bot* shooter, Vector2D target)
 {

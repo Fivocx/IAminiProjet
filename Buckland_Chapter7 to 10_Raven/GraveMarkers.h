@@ -12,8 +12,8 @@
 //-----------------------------------------------------------------------------
 #include <list>
 #include <vector>
-#include "2d/vector2d.h"
-#include "time/crudetimer.h"
+#include "../Common/2d/vector2d.h"
+#include "../Common/time/crudetimer.h"
 
 class GraveMarkers
 {

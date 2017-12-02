@@ -12,7 +12,7 @@
 //
 //-----------------------------------------------------------------------------
 #include <map>
-#include "2d/vector2d.h"
+#include "../Common/2d/vector2d.h"
 
 class Raven_Bot;
 class Raven_Weapon;

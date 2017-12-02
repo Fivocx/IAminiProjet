@@ -1,8 +1,8 @@
 #include "Raven_SensoryMemory.h"
 #include "Raven_Game.h"
-#include "time/crudetimer.h"
-#include "misc/cgdi.h"
-#include "misc/Stream_Utility_Functions.h"
+#include "../Common/time/crudetimer.h"
+#include "../Common/misc/cgdi.h"
+#include "../Common/misc/Stream_Utility_Functions.h"
 
 //------------------------------- ctor ----------------------------------------
 //-----------------------------------------------------------------------------

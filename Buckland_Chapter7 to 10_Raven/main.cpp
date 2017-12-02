@@ -2,12 +2,12 @@
 #include <windows.h>
 #include <time.h>
 #include "constants.h"
-#include "misc/utils.h"
-#include "Time/PrecisionTimer.h"
+#include "../Common/misc/utils.h"
+#include "../Common/Time/PrecisionTimer.h"
 #include "Resource.h"
-#include "misc/windowutils.h"
-#include "misc/Cgdi.h"
-#include "debug/DebugConsole.h"
+#include "../Common/misc/windowutils.h"
+#include "../Common/misc/Cgdi.h"
+#include "../Common/debug/DebugConsole.h"
 #include "Raven_UserOptions.h"
 #include "Raven_Game.h"
 #include "lua/Raven_Scriptor.h"
@@ -17,7 +17,7 @@
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
 
-//Test abbababsbabsabs
+
 
 //--------------------------------- Globals ------------------------------
 //------------------------------------------------------------------------

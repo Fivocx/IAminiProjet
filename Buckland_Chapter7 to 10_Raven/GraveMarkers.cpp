@@ -1,6 +1,6 @@
 #include "GraveMarkers.h"
-#include "misc/cgdi.h"
-#include "2D/Transformations.h"
+#include "../Common/misc/cgdi.h"
+#include "../Common/2D/Transformations.h"
 
 //------------------------------- ctor ----------------------------------------
 //-----------------------------------------------------------------------------

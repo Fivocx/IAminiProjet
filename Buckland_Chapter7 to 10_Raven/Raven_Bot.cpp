@@ -1,26 +1,26 @@
 #include "Raven_Bot.h"
-#include "misc/Cgdi.h"
-#include "misc/utils.h"
-#include "2D/Transformations.h"
-#include "2D/Geometry.h"
+#include "../Common/misc/Cgdi.h"
+#include "../Common/misc/utils.h"
+#include "../Common/2D/Transformations.h"
+#include "../Common/2D/Geometry.h"
 #include "lua/Raven_Scriptor.h"
 #include "Raven_Game.h"
 #include "navigation/Raven_PathPlanner.h"
 #include "Raven_SteeringBehaviors.h"
 #include "Raven_UserOptions.h"
-#include "time/Regulator.h"
+#include "../Common/time/Regulator.h"
 #include "Raven_WeaponSystem.h"
 #include "Raven_SensoryMemory.h"
 
-#include "Messaging/Telegram.h"
+#include "../Common/Messaging/Telegram.h"
 #include "Raven_Messages.h"
-#include "Messaging/MessageDispatcher.h"
+#include "../Common/Messaging/MessageDispatcher.h"
 
 #include "goals/Raven_Goal_Types.h"
 #include "goals/Goal_Think.h"
 
 
-#include "Debug/DebugConsole.h"
+#include "../Common/Debug/DebugConsole.h"
 
 //-------------------------- ctor ---------------------------------------------
 Raven_Bot::Raven_Bot(Raven_Game* world,Vector2D pos):

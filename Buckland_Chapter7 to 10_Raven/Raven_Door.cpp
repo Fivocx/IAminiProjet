@@ -1,10 +1,11 @@
 #include "Raven_Door.h"
-#include "Messaging/telegram.h"
-#include "misc/Stream_Utility_Functions.h"
+#include "../Common/Messaging/telegram.h"
+#include "../Common/misc/Stream_Utility_Functions.h"
 #include <algorithm>
 #include "Raven_Messages.h"
 #include "Raven_Map.h"
-#include "2d/wall2d.h"
+#include "../Common/2d/wall2d.h"
+
 
 //---------------------------- ctor -------------------------------------------
 //-----------------------------------------------------------------------------

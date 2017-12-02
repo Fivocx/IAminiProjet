@@ -2,80 +2,80 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Game">
-      <UniqueIdentifier>{5afad2b9-498e-4439-9128-375f7fe152b0}</UniqueIdentifier>
+      <UniqueIdentifier>{22419cd5-a941-4c40-a36c-b29adb180780}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
     <Filter Include="Game\weapons &amp; projectiles">
-      <UniqueIdentifier>{f8e2454e-0aff-4086-b008-27d18960a5ae}</UniqueIdentifier>
+      <UniqueIdentifier>{2c21fd42-a377-43e1-acaf-2a99997ccb88}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\weapons &amp; projectiles\weapons">
-      <UniqueIdentifier>{22f06348-dc4b-4263-a5c0-a23b95ae39a7}</UniqueIdentifier>
+      <UniqueIdentifier>{e836462e-5e22-42ef-9f57-462619cf8608}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\weapons &amp; projectiles\projectiles">
-      <UniqueIdentifier>{fe63c6c2-a8f9-425f-898c-40a7f7b85e83}</UniqueIdentifier>
+      <UniqueIdentifier>{d022d663-c093-446b-9d50-899fedc7e774}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Base entity classes">
-      <UniqueIdentifier>{98088908-5992-4a0f-a889-715c207b7589}</UniqueIdentifier>
+      <UniqueIdentifier>{3555b36a-d546-4535-acb8-c255972337b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Script related">
-      <UniqueIdentifier>{9d7b066b-6c49-4255-be55-476e8c0b6fdb}</UniqueIdentifier>
+      <UniqueIdentifier>{4d03c55e-44cf-41d0-af25-7d25329c6e81}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Script related\general">
-      <UniqueIdentifier>{6ed6d6d2-b76e-4852-a496-33ada85a0557}</UniqueIdentifier>
+      <UniqueIdentifier>{2aaa7e60-f204-4fe4-8f26-532a06fd874d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Script related\lua headers">
-      <UniqueIdentifier>{7a7cdb20-9c53-48f6-b5f5-3da6359bcbc1}</UniqueIdentifier>
+      <UniqueIdentifier>{bb72bd06-d81e-4a0e-bffd-a5dbcd2e89b4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\misc">
-      <UniqueIdentifier>{ce3a2a8a-9260-492f-81ad-1c276291884d}</UniqueIdentifier>
+      <UniqueIdentifier>{a7df8f5b-7bfa-4b36-9ec0-8758b2ce82eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{dee236fe-e435-493e-98ba-3e69d8b817f6}</UniqueIdentifier>
+      <UniqueIdentifier>{d06f7fb5-61e8-4343-8cf9-1c087d255b76}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\maps">
-      <UniqueIdentifier>{f8dc09bb-f563-4eb1-9c61-ef784a3b864b}</UniqueIdentifier>
+      <UniqueIdentifier>{3d9becdd-492b-4dfa-b7c6-c747f6cd4917}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI">
-      <UniqueIdentifier>{64293b41-0c31-468f-95f4-6c7b42f3b6c1}</UniqueIdentifier>
+      <UniqueIdentifier>{b75dcdd4-fed4-41ac-bd9c-2a5ce7b6d5ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\goals">
-      <UniqueIdentifier>{cba189c7-cf4f-4700-845a-e9a49f46d560}</UniqueIdentifier>
+      <UniqueIdentifier>{acc049ac-934e-4fb3-8a4c-1cfca2d2ef5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\goals\composite">
-      <UniqueIdentifier>{220ba402-39ef-45f7-a966-18043685cad0}</UniqueIdentifier>
+      <UniqueIdentifier>{7d77bb0d-3232-42e9-9270-940d179b42ba}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\goals\goal evaluation">
-      <UniqueIdentifier>{89d69d3f-2c3c-487c-a08b-65218c24ade5}</UniqueIdentifier>
+      <UniqueIdentifier>{f88487b7-314c-4c51-b7a9-cd63ebd7b046}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\goals\atomic">
-      <UniqueIdentifier>{cbb82169-9c76-4c52-a854-fac37df3738f}</UniqueIdentifier>
+      <UniqueIdentifier>{a8b73f6d-114f-4049-8294-966106f92424}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\fuzzy logic">
-      <UniqueIdentifier>{8617fe2c-63df-44b9-94e7-0c6b683b7f6c}</UniqueIdentifier>
+      <UniqueIdentifier>{ea46adb8-7038-4eaf-8e78-455f9264ffd8}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\fuzzy logic\fuzzy set types">
-      <UniqueIdentifier>{5498c68a-91a1-4c33-a69a-5a74fe4c71a5}</UniqueIdentifier>
+      <UniqueIdentifier>{8e7b5fec-295e-45a2-bfb3-83b9a44b7d61}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\Movement &amp; Navigation">
-      <UniqueIdentifier>{fa7146e7-4d15-4661-878e-4d5b43c51e5f}</UniqueIdentifier>
+      <UniqueIdentifier>{bd329dd9-d183-4228-8b12-d047f7a9ebb9}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\Messaging">
-      <UniqueIdentifier>{39179b36-0944-4aae-9447-b67aa05bdedb}</UniqueIdentifier>
+      <UniqueIdentifier>{68aaa627-b442-496b-a932-cdef280d4bc4}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\Sensory Memory">
-      <UniqueIdentifier>{d933299d-da7a-481e-8e2a-193fe04fb1a9}</UniqueIdentifier>
+      <UniqueIdentifier>{bd417b06-12c0-4ef4-b09a-2748fe77a2c6}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\Triggers">
-      <UniqueIdentifier>{7127bcd3-ca8e-487c-b561-dc7983867e31}</UniqueIdentifier>
+      <UniqueIdentifier>{ab407c81-39cd-4396-974a-f3dddc6096bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\Weapon Handling">
-      <UniqueIdentifier>{aa836393-90bb-470b-93ea-1ee73f23ede9}</UniqueIdentifier>
+      <UniqueIdentifier>{800dbeea-637b-4028-976f-2cb51f111c51}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI\Target Selection">
-      <UniqueIdentifier>{0ba96256-f21a-46a5-ad61-252d454a867a}</UniqueIdentifier>
+      <UniqueIdentifier>{d6fa7f22-ce96-4b2b-9200-b602223319c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Common">
-      <UniqueIdentifier>{f3f5ab42-49d8-4348-aa63-66655abd9be1}</UniqueIdentifier>
+      <UniqueIdentifier>{f6b8fa65-1524-45ce-a720-511aa03d9820}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +267,12 @@
     </ClCompile>
     <ClCompile Include="..\Common\misc\WindowUtils.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Weapon_Grenade.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Projectile_Grenade.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -606,13 +612,16 @@
     <ClInclude Include="..\Common\misc\WindowUtils.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="armory\Weapon_Grenade.h">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Projectile_Grenade.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">
       <Filter>Game\Script related</Filter>
-    </None>
-    <None Include="note.txt">
-      <Filter>Resource Files</Filter>
     </None>
     <None Include="maps\Raven_DM1.map">
       <Filter>Resource Files\maps</Filter>
@@ -620,6 +629,11 @@
     <None Include="maps\Raven_DM1_Doors.map">
       <Filter>Resource Files\maps</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="note.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Script1.rc">

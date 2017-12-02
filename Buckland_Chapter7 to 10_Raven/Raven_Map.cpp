@@ -1,9 +1,9 @@
 #include "Raven_Map.h"
 #include "Raven_ObjectEnumerations.h"
-#include "misc/Cgdi.h"
-#include "Graph/HandyGraphFunctions.h"
+#include "../Common/misc/Cgdi.h"
+#include "../Common/Graph/HandyGraphFunctions.h"
 #include "Raven_Door.h"
-#include "game/EntityManager.h"
+#include "../Common/game/EntityManager.h"
 #include "constants.h"
 #include "lua/Raven_Scriptor.h"
 
@@ -17,7 +17,7 @@
 
 //uncomment to write object creation/deletion to debug console
 #define  LOG_CREATIONAL_STUFF
-#include "debug/DebugConsole.h"
+#include "../Common/debug/DebugConsole.h"
 
 
 //----------------------------- ctor ------------------------------------------
@@ -276,6 +276,10 @@ bool Raven_Map::LoadMap(const std::string& filename)
    case type_rocket_launcher:
      
        AddWeapon_Giver(type_rocket_launcher, in); break;
+
+   case type_grenade:
+
+	   AddWeapon_Giver(type_grenade, in); break;
 
     default:
       

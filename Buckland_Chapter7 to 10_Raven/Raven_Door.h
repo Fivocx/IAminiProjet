@@ -13,8 +13,8 @@
 //-----------------------------------------------------------------------------
 #include <vector>
 #include <iosfwd>
-#include "2d/vector2d.h"
-#include "game/BaseGameEntity.h"
+#include "../common/2D/Vector2D.h"
+#include "../Common/game/BaseGameEntity.h"
 
 
 

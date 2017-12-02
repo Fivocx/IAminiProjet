@@ -10,7 +10,7 @@
 //  Desc:   class to select a target from the opponents currently in a bot's
 //          perceptive memory.
 //-----------------------------------------------------------------------------
-#include "2d/Vector2D.h"
+#include "../Common/2d/Vector2D.h"
 #include <list>
 
 
