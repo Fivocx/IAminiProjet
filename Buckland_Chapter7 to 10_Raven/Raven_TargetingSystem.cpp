@@ -28,7 +28,7 @@ void Raven_TargetingSystem::Update()
   for (curBot; curBot != SensedBots.end(); ++curBot)
   {
     //make sure the bot is alive and that it is not the owner
-    if ((*curBot)->isAlive() && (*curBot != m_pOwner) )
+    if ((*curBot)->isAlive() && (*curBot != m_pOwner) && ((*curBot)->GetisEquipe2() != m_pOwner->GetisEquipe2()))
     {
       double dist = Vec2DDistanceSq((*curBot)->Pos(), m_pOwner->Pos());
 
