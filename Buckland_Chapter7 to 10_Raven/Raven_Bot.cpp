@@ -23,7 +23,7 @@
 #include "Debug/DebugConsole.h"
 
 //-------------------------- ctor ---------------------------------------------
-Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader) :
+Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreEquipe) :
 
 	MovingEntity(pos,
 		script->GetDouble("Bot_Scale"),
@@ -47,7 +47,8 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader) :
 	m_Status(spawning),
 	m_bPossessed(false),
 	m_dFieldOfView(DegsToRads(script->GetDouble("Bot_FOV"))),
-	isLeader(isleader)
+	isLeader(isleader),
+	equipe2(autreEquipe)
            
 {
   SetEntityType(type_bot);
@@ -527,7 +528,15 @@ void Raven_Bot::Render()
   gdi->ClosedShape(m_vecBotVBTrans);
   
   //draw the head
-  gdi->BrownBrush();
+  if(!equipe2)
+  {
+	gdi->RedBrush();
+  }
+  else
+  {
+	gdi->BlueBrush();
+  }
+  
   gdi->Circle(Pos(), 6.0 * Scale().x);
 
 

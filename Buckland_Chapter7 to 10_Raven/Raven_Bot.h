@@ -123,12 +123,14 @@ private:
   void          SetUpVertexBuffer();
 
   //le bot est leader ou non
-  bool isLeader = false;
+  bool isLeader;
+  //le bot est dans l'equipe #2 ou non
+  bool equipe2;
 
 
 public:
   
-  Raven_Bot(Raven_Game* world, Vector2D pos, bool isLeader);
+  Raven_Bot(Raven_Game* world, Vector2D pos, bool isLeader, bool equipe2);
   virtual ~Raven_Bot();
 
   //the usual suspects
