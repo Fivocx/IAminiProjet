@@ -209,11 +209,18 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
   //we'll make the same number of attempts to spawn a bot this update as
   //there are spawn points
   int attempts = m_pMap->GetSpawnPoints().size();
-
+  Vector2D pos;
   while (--attempts >= 0)
   { 
     //select a random spawn point
-    Vector2D pos = m_pMap->GetRandomSpawnPoint();
+	  if (pBot->GetisEquipe2())
+	  {
+		 pos = m_pMap->GetSpawnPoints().at(0);
+	  }
+	  else
+	  {
+		 pos = m_pMap->GetSpawnPoints().at(1);
+	  }
 
     //check to see if it's occupied
     std::list<Raven_Bot*>::const_iterator curBot = m_Bots.begin();
@@ -255,17 +262,17 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
 	{
 		rb = new Raven_Bot(this, Vector2D(), true, false);
 	}
-	else if (i > NumBotsToAdd / 2)
-	{
-		rb = new Raven_Bot(this, Vector2D(), false, false);
-	}
-	else if (i == NumBotsToAdd / 2)
+	else if (i == 1)
 	{
 		rb = new Raven_Bot(this, Vector2D(), true, true);
 	}
-	else 
+	else if (i % 2)
 	{
 		rb = new Raven_Bot(this, Vector2D(), false, true);
+	}
+	else 
+	{
+		rb = new Raven_Bot(this, Vector2D(), false, false);
 	}
 
 
