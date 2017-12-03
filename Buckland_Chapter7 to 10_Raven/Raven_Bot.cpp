@@ -23,30 +23,31 @@
 #include "Debug/DebugConsole.h"
 
 //-------------------------- ctor ---------------------------------------------
-Raven_Bot::Raven_Bot(Raven_Game* world,Vector2D pos):
+Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader) :
 
-  MovingEntity(pos,
-               script->GetDouble("Bot_Scale"),
-               Vector2D(0,0),
-               script->GetDouble("Bot_MaxSpeed"),
-               Vector2D(1,0),
-               script->GetDouble("Bot_Mass"),
-               Vector2D(script->GetDouble("Bot_Scale"),script->GetDouble("Bot_Scale")),
-               script->GetDouble("Bot_MaxHeadTurnRate"),
-               script->GetDouble("Bot_MaxForce")),
-                 
-                 m_iMaxHealth(script->GetInt("Bot_MaxHealth")),
-                 m_iHealth(script->GetInt("Bot_MaxHealth")),
-                 m_pPathPlanner(NULL),
-                 m_pSteering(NULL),
-                 m_pWorld(world),
-                 m_pBrain(NULL),
-                 m_iNumUpdatesHitPersistant((int)(FrameRate * script->GetDouble("HitFlashTime"))),
-                 m_bHit(false),
-                 m_iScore(0),
-                 m_Status(spawning),
-                 m_bPossessed(false),
-                 m_dFieldOfView(DegsToRads(script->GetDouble("Bot_FOV")))
+	MovingEntity(pos,
+		script->GetDouble("Bot_Scale"),
+		Vector2D(0, 0),
+		script->GetDouble("Bot_MaxSpeed"),
+		Vector2D(1, 0),
+		script->GetDouble("Bot_Mass"),
+		Vector2D(script->GetDouble("Bot_Scale"), script->GetDouble("Bot_Scale")),
+		script->GetDouble("Bot_MaxHeadTurnRate"),
+		script->GetDouble("Bot_MaxForce")),
+
+	m_iMaxHealth(script->GetInt("Bot_MaxHealth")),
+	m_iHealth(script->GetInt("Bot_MaxHealth")),
+	m_pPathPlanner(NULL),
+	m_pSteering(NULL),
+	m_pWorld(world),
+	m_pBrain(NULL),
+	m_iNumUpdatesHitPersistant((int)(FrameRate * script->GetDouble("HitFlashTime"))),
+	m_bHit(false),
+	m_iScore(0),
+	m_Status(spawning),
+	m_bPossessed(false),
+	m_dFieldOfView(DegsToRads(script->GetDouble("Bot_FOV"))),
+	isLeader(isleader)
            
 {
   SetEntityType(type_bot);
@@ -562,7 +563,13 @@ void Raven_Bot::Render()
   if (UserOptions->m_bShowScore)
   {
     gdi->TextAtPos(Pos().x-40, Pos().y+10, "Scr:"+ std::to_string(Score()));
-  }    
+  }
+
+  if (isLeader)
+  {
+	gdi->TextAtPos(Pos().x - 10, Pos().y - 20, "Leader");
+  }
+  
 }
 
 //------------------------- SetUpVertexBuffer ---------------------------------

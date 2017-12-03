@@ -122,10 +122,13 @@ private:
   //initializes the bot's VB with its geometry
   void          SetUpVertexBuffer();
 
+  //le bot est leader ou non
+  bool isLeader = false;
+
 
 public:
   
-  Raven_Bot(Raven_Game* world, Vector2D pos);
+  Raven_Bot(Raven_Game* world, Vector2D pos, bool isLeader);
   virtual ~Raven_Bot();
 
   //the usual suspects
