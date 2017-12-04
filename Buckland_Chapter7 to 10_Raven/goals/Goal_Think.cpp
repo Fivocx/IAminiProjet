@@ -11,12 +11,14 @@
 #include "Goal_Wander.h"
 #include "Raven_Goal_Types.h"
 #include "Goal_AttackTarget.h"
+#include "../Goal_AttackLeaderTarget.h"
 
 
 #include "GetWeaponGoal_Evaluator.h"
 #include "GetHealthGoal_Evaluator.h"
 #include "ExploreGoal_Evaluator.h"
 #include "AttackTargetGoal_Evaluator.h"
+#include "../AttackLeaderTargetGoal_Evaluator.h"
 
 
 Goal_Think::Goal_Think(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_think)
@@ -34,6 +36,7 @@ Goal_Think::Goal_Think(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_thi
   double GrenadeBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
   double ExploreBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
   double AttackBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
+  double AttackLeaderBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
 
   //create the evaluator objects
   m_Evaluators.push_back(new GetHealthGoal_Evaluator(HealthBias));
@@ -47,6 +50,7 @@ Goal_Think::Goal_Think(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_thi
                                                      type_rocket_launcher));
   m_Evaluators.push_back(new GetWeaponGoal_Evaluator(GrenadeBias,
 													 type_grenade));
+  m_Evaluators.push_back(new AttackLeaderTargetGoal_Evaluator(AttackLeaderBias));
 }
 
 //----------------------------- dtor ------------------------------------------
@@ -174,6 +178,15 @@ void Goal_Think::AddGoal_AttackTarget()
 void Goal_Think::QueueGoal_MoveToPosition(Vector2D pos)
 {
    m_SubGoals.push_back(new Goal_MoveToPosition(m_pOwner, pos));
+}
+
+void Goal_Think::AddGoal_AttackLeaderTarget()
+{
+	if (notPresent(goal_attack_leader_target))
+	{
+		RemoveAllSubgoals();
+		AddSubgoal(new Goal_AttackLeaderTarget(m_pOwner));
+	}
 }
 
 

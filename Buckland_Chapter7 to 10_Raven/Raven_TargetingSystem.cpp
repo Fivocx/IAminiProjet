@@ -39,7 +39,7 @@ void Raven_TargetingSystem::Update()
 		  {
 			  double dist = Vec2DDistanceSq((*curBot)->Pos(), m_pOwner->Pos());
 
-			  if ((m_pOwner->GetisLeader()) && ((*curBot)->Health() <= 90))
+			  if ((m_pOwner->GetisLeader()) && ((*curBot)->Health() <= 50))
 			  {
 				  m_pCurrentTarget = *curBot;
 				  m_pOwner->SetTargetLowLeader(*curBot);

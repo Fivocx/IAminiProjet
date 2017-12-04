@@ -87,6 +87,10 @@ std::string GoalTypeToString::Convert(int gt)
 
     return "say_phrase";
 
+  case goal_attack_leader_target:
+
+	  return "attack_leader_target";
+
   default:
 
     return "UNKNOWN GOAL TYPE!";
