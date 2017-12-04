@@ -2,6 +2,7 @@
 #include "../Raven_Bot.h"
 #include "../Raven_Game.h"
 
+#include "Goal_DodgeSideToSide.h"
 #include "Goal_TraverseEdge.h"
 #include "Goal_NegotiateDoor.h"
 #include "../../Common/misc/cgdi.h"
@@ -37,6 +38,8 @@ void Goal_FollowPath::Activate()
   {
   case NavGraphEdge::normal:
     {
+	  if(m_pOwner->Health() <= 25 || m_pOwner->Health() >= 60)
+		  AddSubgoal(new Goal_DodgeSideToSide(m_pOwner));
       AddSubgoal(new Goal_TraverseEdge(m_pOwner, edge, m_Path.empty()));
     }
 
