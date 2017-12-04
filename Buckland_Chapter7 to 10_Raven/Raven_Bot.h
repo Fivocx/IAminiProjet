@@ -127,10 +127,14 @@ private:
   //le bot est dans l'equipe #2 ou non
   bool equipe2;
 
+  Raven_Bot* targetLowLeader = nullptr;
+
+  Raven_Bot* leaderPtr;
+
 
 public:
   
-  Raven_Bot(Raven_Game* world, Vector2D pos, bool isLeader, bool equipe2);
+  Raven_Bot(Raven_Game* world, Vector2D pos, bool isLeader, bool equipe2, Raven_Bot* leaderPt);
   virtual ~Raven_Bot();
 
   //the usual suspects
@@ -223,9 +227,25 @@ public:
   {
 	  return isLeader;
   }
+
   bool GetisEquipe2()
   {
 	  return equipe2;
+  }
+
+  void SetTargetLowLeader(Raven_Bot* lowTarget)
+  {
+	  targetLowLeader = lowTarget;
+  }
+
+  Raven_Bot* const GetTargetLowLeader()
+  {
+	  return targetLowLeader;
+  }
+
+  Raven_Bot* const GetOwnLeader()
+  {
+	  return leaderPtr;
   }
 };
 

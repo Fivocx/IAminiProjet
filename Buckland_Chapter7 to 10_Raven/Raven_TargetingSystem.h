@@ -29,7 +29,6 @@ private:
   //the current target (this will be null if there is no target assigned)
   Raven_Bot*  m_pCurrentTarget;
 
-
 public:
 
   Raven_TargetingSystem(Raven_Bot* owner);

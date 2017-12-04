@@ -23,7 +23,7 @@
 #include "Debug/DebugConsole.h"
 
 //-------------------------- ctor ---------------------------------------------
-Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreEquipe) :
+Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreEquipe, Raven_Bot* leaderPt) :
 
 	MovingEntity(pos,
 		script->GetDouble("Bot_Scale"),
@@ -48,7 +48,8 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreE
 	m_bPossessed(false),
 	m_dFieldOfView(DegsToRads(script->GetDouble("Bot_FOV"))),
 	isLeader(isleader),
-	equipe2(autreEquipe)
+	equipe2(autreEquipe),
+	leaderPtr(leaderPt)
            
 {
   SetEntityType(type_bot);

@@ -253,26 +253,32 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
 //-----------------------------------------------------------------------------
 void Raven_Game::AddBots(unsigned int NumBotsToAdd)
 { 
+	Raven_Bot* rb;
+	Raven_Bot* leader1;
+	Raven_Bot* leader2;
+
   for(int i = 0; i < NumBotsToAdd; i++)
   {
     //create a bot. (its position is irrelevant at this point because it will
     //not be rendered until it is spawned)
-	Raven_Bot* rb;
+
 	if (i == 0)
 	{
-		rb = new Raven_Bot(this, Vector2D(), true, false);
+		rb = new Raven_Bot(this, Vector2D(), true, false, nullptr);
+		leader1 = rb;
 	}
 	else if (i == 1)
 	{
-		rb = new Raven_Bot(this, Vector2D(), true, true);
+		rb = new Raven_Bot(this, Vector2D(), true, true, nullptr);
+		leader2 = rb;
 	}
 	else if (i % 2)
 	{
-		rb = new Raven_Bot(this, Vector2D(), false, true);
+		rb = new Raven_Bot(this, Vector2D(), false, true, leader2);
 	}
 	else 
 	{
-		rb = new Raven_Bot(this, Vector2D(), false, false);
+		rb = new Raven_Bot(this, Vector2D(), false, false, leader1);
 	}
 
 
@@ -290,6 +296,7 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
   debug_con << "Adding bot with ID " << ttos(rb->ID()) << "";
 #endif
   }
+  int v = 0;
 }
 
 //---------------------------- NotifyAllBotsOfRemoval -------------------------
