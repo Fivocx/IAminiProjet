@@ -25,27 +25,36 @@ void Raven_TargetingSystem::Update()
   SensedBots = m_pOwner->GetSensoryMem()->GetListOfRecentlySensedOpponents();
   
   std::list<Raven_Bot*>::const_iterator curBot = SensedBots.begin();
-  for (curBot; curBot != SensedBots.end(); ++curBot)
+
+  if ((!m_pOwner->GetisLeader()) && (m_pOwner->GetOwnLeader()->GetTargetLowLeader()))
   {
-    //make sure the bot is alive and that it is not the owner
-    if ((*curBot)->isAlive() && (*curBot != m_pOwner) && ((*curBot)->GetisEquipe2() != m_pOwner->GetisEquipe2()))
-    {
-      double dist = Vec2DDistanceSq((*curBot)->Pos(), m_pOwner->Pos());
-
-	  if ((m_pOwner->GetisLeader()) && ((*curBot)->Health() < 50))
-	  {
-		  m_pCurrentTarget = *curBot;
-		  m_pOwner->SetTargetLowLeader(*curBot);
-	  }
-
-      else if (dist < ClosestDistSoFar)
-      {
-        ClosestDistSoFar = dist;
-        m_pCurrentTarget = *curBot;
-
-      }
-    }
+	  m_pCurrentTarget = m_pOwner->GetOwnLeader()->GetTargetLowLeader();
   }
+  else 
+  {
+	  for (curBot; curBot != SensedBots.end(); ++curBot)
+	  {
+		  //make sure the bot is alive and that it is not the owner
+		  if ((*curBot)->isAlive() && (*curBot != m_pOwner) && ((*curBot)->GetisEquipe2() != m_pOwner->GetisEquipe2()))
+		  {
+			  double dist = Vec2DDistanceSq((*curBot)->Pos(), m_pOwner->Pos());
+
+			  if ((m_pOwner->GetisLeader()) && ((*curBot)->Health() <= 90))
+			  {
+				  m_pCurrentTarget = *curBot;
+				  m_pOwner->SetTargetLowLeader(*curBot);
+			  }
+
+			  else if (dist < ClosestDistSoFar)
+			  {
+				  ClosestDistSoFar = dist;
+				  m_pCurrentTarget = *curBot;
+				  m_pOwner->SetTargetLowLeader(nullptr);
+			  }
+		  }
+	  }
+  }
+
 }
 
 
