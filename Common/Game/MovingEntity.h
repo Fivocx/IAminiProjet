@@ -13,16 +13,36 @@
 //------------------------------------------------------------------------
 
 #include <cassert>
+#include <queue>
 
 #include "2D/Vector2D.h"
 #include "Game/BaseGameEntity.h"
+#include "../Buckland_Chapter7 to 10_Raven/constants.h"
 
+/// <summary> Stores the previous positions of moving entity at each frame </summary>
+class pStates
+{
+protected:
+	Vector2D    m_vVelocity;
+	Vector2D    m_vHeading;
+	Vector2D	m_vPosition;
 
+public:
+	pStates(Vector2D S, Vector2D H, Vector2D P): m_vVelocity(S), m_vHeading(H), m_vPosition(P){}
+	double			Speed()const	 { return m_vVelocity.Length(); }
+	Vector2D		Velocity()const  { return m_vVelocity; }
+	Vector2D		Heading()const	 { return m_vHeading; }
+	Vector2D		Side()const		 { return m_vHeading.Perp(); }
+	Vector2D		Pos()const		 { return m_vPosition; }
+};
 
 class MovingEntity : public BaseGameEntity
 {
 protected:
-  
+  const float TimeRemembered = 1;
+
+  std::deque<pStates> lastStates;
+
   Vector2D    m_vVelocity;
   
   //a normalized vector pointing in the direction the entity is heading. 
@@ -96,6 +116,8 @@ public:
   double    MaxTurnRate()const{return m_dMaxTurnRate;}
   void      SetMaxTurnRate(double val){m_dMaxTurnRate = val;}
 
+  void		UpdatePreviousStates();
+  pStates	GetPreviousState(double timeSpent);
 };
 
 
@@ -159,7 +181,22 @@ inline void MovingEntity::SetHeading(Vector2D new_heading)
   m_vSide = m_vHeading.Perp();
 }
 
+void MovingEntity::UpdatePreviousStates()
+{
+	lastStates.push_front(pStates(m_vVelocity, m_vHeading, m_vPosition));
+	if (lastStates.size() > TimeRemembered / FrameRate)
+		lastStates.pop_back();
+	
+}
 
+pStates	MovingEntity::GetPreviousState(double timeSpent)
+{
+	if (timeSpent > TimeRemembered){
+		timeSpent = TimeRemembered / FrameRate;
+	}
+	int framesAgo = (int)(timeSpent / FrameRate);
+	return lastStates[framesAgo];
+}
 
 
 #endif

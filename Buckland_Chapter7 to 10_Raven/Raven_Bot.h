@@ -31,12 +31,11 @@ class Raven_SensoryMemory;
 
 
 
-
 class Raven_Bot : public MovingEntity
 {
 private:
 
-  enum Status{alive, dead, spawning};
+  enum Status{alive, dead, spawning}; 
 
 private:
 

@@ -164,6 +164,7 @@ void Raven_Bot::Update()
     //and takes a shot if a shot is possible
     m_pWeaponSys->TakeAimAndShoot();
   }
+  MovingEntity::Update();
 }
 
 

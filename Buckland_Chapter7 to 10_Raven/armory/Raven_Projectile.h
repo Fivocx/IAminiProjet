@@ -100,7 +100,7 @@ public:
   void Read (std::ifstream& is){}
 
   //must be implemented
-  virtual void Update() = 0;
+  virtual void Update() { MovingEntity::Update(); };
   virtual void Render() = 0;
   
   //set to true if the projectile has impacted and has finished any explosion 

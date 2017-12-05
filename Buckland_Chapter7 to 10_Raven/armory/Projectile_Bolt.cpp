@@ -85,6 +85,8 @@ void Bolt::Update()
 
        return;
      }
+
+	 MovingEntity::Update();
   }
 }
 

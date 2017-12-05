@@ -1,5 +1,5 @@
 #include "BaseGameEntity.h"
-
+#include "time/Regulator.h"
 
 int BaseGameEntity::m_iNextValidID = 0;
 

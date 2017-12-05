@@ -184,7 +184,7 @@ void Raven_WeaponSystem::TakeAimAndShoot()const
        m_dAimPersistance) )
   {
     //the position the weapon will be aimed at
-    Vector2D AimingPos = m_pOwner->GetTargetBot()->Pos();
+	  Vector2D AimingPos = m_pOwner->GetTargetBot()->GetPreviousState(m_dReactionTime).Pos();
     
     //if the current weapon is not an instant hit type gun the target position
     //must be adjusted to take into account the predicted movement of the 

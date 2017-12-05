@@ -18,7 +18,7 @@
 #include "2D/Geometry.h"
 #include "misc/utils.h"
 
-
+const float TimelengthRemembered = 1;
 
 struct Telegram;
 
@@ -55,6 +55,7 @@ protected:
   
   //its location in the environment
   Vector2D m_vPosition;
+  std::vector<Vector2D> m_lastsvPositions;
 
   Vector2D m_vScale;
 
@@ -68,7 +69,7 @@ public:
 
   virtual ~BaseGameEntity(){}
 
-  virtual void Update(){}; 
+  virtual void Update() {};
 
   virtual void Render()=0;
   

@@ -61,6 +61,8 @@ void Rocket::Update()
       m_bDead = true;
     }
   }
+
+  MovingEntity::Update();
 }
 
 void Rocket::TestForImpact()

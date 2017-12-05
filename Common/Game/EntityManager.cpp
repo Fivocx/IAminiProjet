@@ -1,7 +1,6 @@
 #include "game/EntityManager.h"
 #include "game/BaseGameEntity.h"
 
-
 //--------------------------- Instance ----------------------------------------
 //
 //   this class is a singleton

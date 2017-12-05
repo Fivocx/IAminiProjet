@@ -63,6 +63,7 @@ void Slug::Update()
     m_bDead = true;
   }
 
+  MovingEntity::Update();
 }
 
 //----------------------------------- TestForImpact ---------------------------

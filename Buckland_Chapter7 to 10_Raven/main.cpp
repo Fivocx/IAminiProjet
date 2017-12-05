@@ -532,6 +532,10 @@ int WINAPI WinMain (HINSTANCE hInstance,
 
     while(!bDone)
     {
+
+double time = timer.CurrentTime();
+
+
       while( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) 
       {
         if( msg.message == WM_QUIT ) 
@@ -557,8 +561,14 @@ int WINAPI WinMain (HINSTANCE hInstance,
 
       //give the OS a little time
       Sleep(2);
-     					
-    }//end while
+
+
+double newTime = timer.CurrentTime();
+debug_con << FrameRate << "" << "";
+time = newTime;
+
+
+   }//end while
 
   }//end try block
 
