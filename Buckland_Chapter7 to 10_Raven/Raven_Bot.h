@@ -39,6 +39,14 @@ private:
 
 private:
 
+  //this is the minimum amount of time a bot needs to see an opponent before
+  //it can react to it. This variable is used to prevent a bot shooting at
+  //an opponent the instant it becomes visible.
+  double            m_dReactionTime;
+
+
+
+
   //alive, dead or spawning?
   Status                             m_Status;
 
@@ -152,6 +160,8 @@ public:
   bool          RotateFacingTowardPosition(Vector2D target);
  
   //methods for accessing attribute data
+  double        ReactionTime()const { return m_dReactionTime; }
+
   int           Health()const{return m_iHealth;}
   int           MaxHealth()const{return m_iMaxHealth;}
   void          ReduceHealth(unsigned int val);

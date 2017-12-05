@@ -60,9 +60,10 @@ inline void Blaster::ShootAt(Vector2D pos)
 //---------------------------- Desirability -----------------------------------
 //
 //-----------------------------------------------------------------------------
-double Blaster::GetDesirability(double DistToTarget)
+double Blaster::GetDesirability(double DistToTarget, double TangentialSpeed)
 {
   //fuzzify distance and amount of ammo
+  m_FuzzyModule.Fuzzify("TangencialSpeed", TangentialSpeed);
   m_FuzzyModule.Fuzzify("DistToTarget", DistToTarget);
 
   m_dLastDesirabilityScore = m_FuzzyModule.DeFuzzify("Desirability", FuzzyModule::max_av);
@@ -76,20 +77,34 @@ double Blaster::GetDesirability(double DistToTarget)
 //-----------------------------------------------------------------------------
 void Blaster::InitializeFuzzyModule()
 {
-  FuzzyVariable& DistToTarget = m_FuzzyModule.CreateFLV("DistToTarget");
+	FuzzyVariable& TanSpeed = m_FuzzyModule.CreateFLV("TangencialSpeed");
+	FzSet& TanS_Fast = TanSpeed.AddRightShoulderSet("Fast", 3.5, 5, 100);
+	FzSet& TanS_Medium = TanSpeed.AddTriangularSet("Medium", 1.5, 3, 4.5);
+	FzSet& TanS_Slow = TanSpeed.AddLeftShoulderSet("Slow", 0, 1, 2.5);
 
+
+  FuzzyVariable& DistToTarget = m_FuzzyModule.CreateFLV("DistToTarget");
   FzSet& Target_Close = DistToTarget.AddLeftShoulderSet("Target_Close",0,25,150);
   FzSet& Target_Medium = DistToTarget.AddTriangularSet("Target_Medium",25,150,300);
   FzSet& Target_Far = DistToTarget.AddRightShoulderSet("Target_Far",150,300,1000);
+
 
   FuzzyVariable& Desirability = m_FuzzyModule.CreateFLV("Desirability"); 
   FzSet& VeryDesirable = Desirability.AddRightShoulderSet("VeryDesirable", 50, 75, 100);
   FzSet& Desirable = Desirability.AddTriangularSet("Desirable", 25, 50, 75);
   FzSet& Undesirable = Desirability.AddLeftShoulderSet("Undesirable", 0, 25, 50);
 
-  m_FuzzyModule.AddRule(Target_Close, Desirable);
-  m_FuzzyModule.AddRule(Target_Medium, FzVery(Undesirable));
-  m_FuzzyModule.AddRule(Target_Far, FzVery(Undesirable));
+  m_FuzzyModule.AddRule(FzAND(Target_Close, TanS_Fast), Desirable);
+  m_FuzzyModule.AddRule(FzAND(Target_Medium, TanS_Fast), Undesirable);
+  m_FuzzyModule.AddRule(FzAND(Target_Far, TanS_Fast), FzVery(Undesirable));
+
+  m_FuzzyModule.AddRule(FzAND(Target_Close, TanS_Medium), Undesirable);
+  m_FuzzyModule.AddRule(FzAND(Target_Medium, TanS_Medium), Undesirable);
+  m_FuzzyModule.AddRule(FzAND(Target_Far, TanS_Medium), Undesirable);
+
+  m_FuzzyModule.AddRule(FzAND(Target_Close, TanS_Slow), Desirable);
+  m_FuzzyModule.AddRule(FzAND(Target_Medium, TanS_Slow), Desirable);
+  m_FuzzyModule.AddRule(FzAND(Target_Far, TanS_Slow), FzVery(VeryDesirable));
 }
 
 

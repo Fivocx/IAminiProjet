@@ -35,6 +35,7 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreE
 		script->GetDouble("Bot_MaxHeadTurnRate"),
 		script->GetDouble("Bot_MaxForce")),
 
+	m_dReactionTime(script->GetDouble("Bot_ReactionTime")),
 	m_iMaxHealth(script->GetInt("Bot_MaxHealth")),
 	m_iHealth(script->GetInt("Bot_MaxHealth")),
 	m_pPathPlanner(NULL),
@@ -79,7 +80,7 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreE
   m_pTargSys = new Raven_TargetingSystem(this);
 
   m_pWeaponSys = new Raven_WeaponSystem(this,
-                                        script->GetDouble("Bot_ReactionTime"),
+										m_dReactionTime,
                                         script->GetDouble("Bot_AimAccuracy"),
                                         script->GetDouble("Bot_AimPersistance"));
 

@@ -10,6 +10,8 @@
 #include "Raven_UserOptions.h"
 #include "2D/transformations.h"
 
+#include <cmath>
+
 
 
 //------------------------- ctor ----------------------------------------------
@@ -59,6 +61,7 @@ void Raven_WeaponSystem::Initialize()
   m_WeaponMap[type_rocket_launcher] = 0;
 }
 
+
 //-------------------------------- SelectWeapon -------------------------------
 //
 //-----------------------------------------------------------------------------
@@ -69,7 +72,15 @@ void Raven_WeaponSystem::SelectWeapon()
   if (m_pOwner->GetTargetSys()->isTargetPresent())
   {
     //calculate the distance to the target
-    double DistToTarget = Vec2DDistance(m_pOwner->Pos(), m_pOwner->GetTargetSys()->GetTarget()->Pos());
+	  Vector2D PositionDifference = m_pOwner->Pos() - m_pOwner->GetTargetSys()->GetTarget()->GetPreviousState(m_dReactionTime).Pos();
+    double DistToTarget = PositionDifference.Length();
+	Vector2D TargetVelocity = m_pOwner->GetTargetSys()->GetTarget()->GetPreviousState(m_dReactionTime).Velocity();
+
+	Vector2D distancePerp = PositionDifference.Perp();
+	distancePerp.Normalize();
+	double PerpSpeed= TargetVelocity.Dot(distancePerp);
+	double TangentialSpeed = abs(tan(PerpSpeed / DistToTarget)) * 1000;
+
 
     //for each weapon in the inventory calculate its desirability given the 
     //current situation. The most desirable weapon is selected
@@ -82,7 +93,7 @@ void Raven_WeaponSystem::SelectWeapon()
       //distance to target and ammo remaining)
       if (curWeap->second)
       {
-        double score = curWeap->second->GetDesirability(DistToTarget);
+		  double score = curWeap->second->GetDesirability(DistToTarget, TangentialSpeed);
 
         //if it is the most desirable so far select it
         if (score > BestSoFar)

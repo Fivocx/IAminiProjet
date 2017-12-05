@@ -10,7 +10,7 @@
 //--------------------------- ctor --------------------------------------------
 //-----------------------------------------------------------------------------
 RocketLauncher::RocketLauncher(Raven_Bot*   owner):
-
+					  blastRadius(script->GetDouble("Rocket_BlastRadius")),
                       Raven_Weapon(type_rocket_launcher,
                                    script->GetInt("RocketLauncher_DefaultRounds"),
                                    script->GetInt("RocketLauncher_MaxRoundsCarried"),
@@ -34,6 +34,7 @@ RocketLauncher::RocketLauncher(Raven_Bot*   owner):
   {
     m_vecWeaponVB.push_back(weapon[vtx]);
   }
+  
 
   //setup the fuzzy module
   InitializeFuzzyModule();
@@ -63,8 +64,23 @@ inline void RocketLauncher::ShootAt(Vector2D pos)
 //---------------------------- Desirability -----------------------------------
 //
 //-----------------------------------------------------------------------------
-double RocketLauncher::GetDesirability(double DistToTarget)
+double RocketLauncher::GetDesirability(double DistToTarget, double PerpendicularSpeed)
 {
+	std::list<Raven_Bot*>::const_iterator curBot = m_pOwner->GetWorld()->GetAllBots().begin();
+	int enemiesInRange = 0;
+	int alliesInRange = 0;
+	for (curBot; curBot != m_pOwner->GetWorld()->GetAllBots().end(); ++curBot)
+	{
+		if (Vec2DDistance(m_pOwner->Pos(), (*curBot)->Pos()) < blastRadius + (*curBot)->BRadius())
+		{
+			if ((*curBot)->GetisEquipe2() != m_pOwner->GetisEquipe2())
+				enemiesInRange++;
+			else
+				alliesInRange++;
+		}
+	}
+	int enemiesDifferencial = enemiesInRange - alliesInRange;
+	
   if (m_iNumRoundsLeft == 0)
   {
     m_dLastDesirabilityScore = 0;
@@ -72,6 +88,7 @@ double RocketLauncher::GetDesirability(double DistToTarget)
   else
   {
     //fuzzify distance and amount of ammo
+	m_FuzzyModule.Fuzzify("EnemiesInRange", enemiesDifferencial);
     m_FuzzyModule.Fuzzify("DistToTarget", DistToTarget);
     m_FuzzyModule.Fuzzify("AmmoStatus", (double)m_iNumRoundsLeft);
 
@@ -87,6 +104,10 @@ double RocketLauncher::GetDesirability(double DistToTarget)
 //-----------------------------------------------------------------------------
 void RocketLauncher::InitializeFuzzyModule()
 {
+	FuzzyVariable& EnemiesInRange = m_FuzzyModule.CreateFLV("EnemiesInRange");
+	FzSet& Enemies_Bad = EnemiesInRange.AddLeftShoulderSet("Terrible", -100, -1, 1);
+	FzSet& Enemies_Good = EnemiesInRange.AddRightShoulderSet("Great", 0, 2, 100);
+
 	FuzzyVariable& DistToTarget = m_FuzzyModule.CreateFLV("DistToTarget");
 	FzSet& Target_Close = DistToTarget.AddLeftShoulderSet("Target_Close", 0, 25, 150);
 	FzSet& Target_MedClose = DistToTarget.AddTriangularSet("Target_MedClose", 25, 150, 300);
@@ -109,35 +130,130 @@ void RocketLauncher::InitializeFuzzyModule()
 	FzSet& Ammo_Low = AmmoStatus.AddTriangularSet("Ammo_Low", 0, 0, 10);
 
 
-	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads), Undesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_High), Undesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Okay), Undesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Barely), Undesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Low), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_High, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Okay, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Barely, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Low, Enemies_Good), Undesirable);
 
-	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Loads), BarelyDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_High), BarelyDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Okay), Undesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Barely), Undesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Low), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Loads, Enemies_Good), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_High, Enemies_Good), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Okay, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Barely, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Low, Enemies_Good), Undesirable);
 
-	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Loads), VeryDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_High), VeryDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Okay), QuiteDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Barely), Desirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Low), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Loads, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_High, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Okay, Enemies_Good), QuiteDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Barely, Enemies_Good), Desirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Low, Enemies_Good), BarelyDesirable);
 
-	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Loads), VeryDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_High), VeryDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Okay), VeryDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Barely), QuiteDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Low), Desirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Loads, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_High, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Okay, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Barely, Enemies_Good), QuiteDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Low, Enemies_Good), Desirable);
 
-	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Loads), Desirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_High), Desirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Okay), BarelyDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Barely), BarelyDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Low), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Loads, Enemies_Good), Desirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_High, Enemies_Good), Desirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Okay, Enemies_Good), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Barely, Enemies_Good), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Low, Enemies_Good), Undesirable);
+
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_High, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Okay, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Barely, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Low, Enemies_Good), Undesirable);
+
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Loads, Enemies_Good), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_High, Enemies_Good), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Okay, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Barely, Enemies_Good), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Low), Enemies_Good);
+
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Loads, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_High, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Okay, Enemies_Good), QuiteDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Barely, Enemies_Good), Desirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Low, Enemies_Good), BarelyDesirable);
+
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Loads, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_High, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Okay, Enemies_Good), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Barely, Enemies_Good), QuiteDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Low, Enemies_Good), Desirable);
+
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Loads, Enemies_Good), Desirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_High, Enemies_Good), Desirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Okay, Enemies_Good), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Barely, Enemies_Good), BarelyDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Low, Enemies_Good), Undesirable);
+
+
+
+
+
+
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
+
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
+
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
+
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
+
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
+
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
+
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedClose, Ammo_Low), Undesirable), FzVery(Undesirable);
+
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
+
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_MedFar, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
+
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Loads, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_High, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Okay, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Barely, Enemies_Bad), FzVery(Undesirable));
+	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Low, Enemies_Bad), FzVery(Undesirable));
 }
 
 
