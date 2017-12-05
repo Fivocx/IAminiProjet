@@ -21,11 +21,12 @@
 #include "armory/Projectile_Rocket.h"
 #include "armory/Projectile_Pellet.h"
 #include "armory/Projectile_Slug.h"
+#include "Projectile_HealingRay.h"
 #include "armory/Projectile_Bolt.h"
 
 #include "goals/Goal_Think.h"
 #include "goals/Raven_Goal_Types.h"
-
+#include "Healer_Bot.h"
 
 
 //uncomment to write object creation/deletion to debug console
@@ -272,6 +273,14 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
 		rb = new Raven_Bot(this, Vector2D(), true, true, nullptr);
 		leader2 = rb;
 	}
+	else if (i == 2)
+	{
+		rb = new Healer_Bot(this, Vector2D(), true, false, leader2);
+	}
+	else if (i == 3)
+	{
+		rb = new Healer_Bot(this, Vector2D(), true, true, leader1);
+	}
 	else if (i % 2)
 	{
 		rb = new Raven_Bot(this, Vector2D(), false, true, leader2);
@@ -361,6 +370,18 @@ void Raven_Game::AddRailGunSlug(Raven_Bot* shooter, Vector2D target)
   
   #ifdef LOG_CREATIONAL_STUFF
   debug_con << "Adding a rail gun slug" << rp->ID() << " at pos " << rp->Pos() << "";
+#endif
+}
+
+//------------------------- AddHealingRayGunHealingRay -----------------------------------
+void Raven_Game::AddHealingRay(Raven_Bot* shooter, Vector2D target)
+{
+	Raven_Projectile* rp = new HealingRay(shooter, target);
+
+	m_Projectiles.push_back(rp);
+
+#ifdef LOG_CREATIONAL_STUFF
+	debug_con << "Adding a HealingRay " << rp->ID() << " at pos " << rp->Pos() << "";
 #endif
 }
 

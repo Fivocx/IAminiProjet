@@ -3,6 +3,7 @@
 #include "armory/Weapon_RailGun.h"
 #include "armory/Weapon_ShotGun.h"
 #include "armory/Weapon_Blaster.h"
+#include "Weapon_HealingRayGun.h"
 #include "Raven_Bot.h"
 #include "misc/utils.h"
 #include "lua/Raven_Scriptor.h"
@@ -12,7 +13,7 @@
 
 #include "../../Common/fuzzy/FuzzyOperators.h"
 #include <cmath>
-
+#include <vector>
 
 
 //------------------------- ctor ----------------------------------------------
@@ -20,12 +21,13 @@
 Raven_WeaponSystem::Raven_WeaponSystem(Raven_Bot* owner,
                                        double ReactionTime,
                                        double AimAccuracy,
-                                       double AimPersistance):m_pOwner(owner),
+                                       double AimPersistance,
+									   unsigned int avalaibleWeapons):m_pOwner(owner),
                                                           m_dReactionTime(ReactionTime),
                                                           m_dAimAccuracy(AimAccuracy),
                                                           m_dAimPersistance(AimPersistance)
 {
-  Initialize();
+  Initialize(avalaibleWeapons);
 }
 
 //------------------------- dtor ----------------------------------------------
@@ -42,7 +44,7 @@ Raven_WeaponSystem::~Raven_WeaponSystem()
 //
 //  initializes the weapons
 //-----------------------------------------------------------------------------
-void Raven_WeaponSystem::Initialize()
+void Raven_WeaponSystem::Initialize(unsigned int defaultWeapon)
 {
 	InitializeFuzzyModule();
   //delete any existing weapons
@@ -52,17 +54,52 @@ void Raven_WeaponSystem::Initialize()
     delete curW->second;
   }
 
+  this->defaultWeapon = defaultWeapon;
   m_WeaponMap.clear();
 
   //set up the container
-  m_pCurrentWeapon = new Blaster(m_pOwner);
 
-  m_WeaponMap[type_blaster]         = m_pCurrentWeapon;
-  m_WeaponMap[type_shotgun]         = 0;
-  m_WeaponMap[type_rail_gun]        = 0;
-  m_WeaponMap[type_rocket_launcher] = 0;
+	  switch (defaultWeapon)
+	  {
+	  case type_blaster:
+		  m_pCurrentWeapon = new Blaster(m_pOwner);
+		  m_WeaponMap[type_blaster] = m_pCurrentWeapon;
+		  break;
+	  case type_shotgun:
+		  m_pCurrentWeapon = new ShotGun(m_pOwner);
+		  m_WeaponMap[type_shotgun] = m_pCurrentWeapon;
+		  break;
+	  case type_rail_gun:
+		  m_pCurrentWeapon = new RailGun(m_pOwner);
+		  m_WeaponMap[type_rail_gun] = m_pCurrentWeapon;
+		  break;
+	  case type_rocket_launcher:
+		  m_pCurrentWeapon = new RocketLauncher(m_pOwner);
+		  m_WeaponMap[type_rocket_launcher] = m_pCurrentWeapon;
+		  break;
+	  case type_HealingRayGun:
+		  m_pCurrentWeapon = new HealingRayGun(m_pOwner);
+		  m_WeaponMap[type_HealingRayGun] = m_pCurrentWeapon;
+		  break;
+	  default:
+		  break;
+	  }
+
+  
+  if (defaultWeapon != type_blaster)
+	  m_WeaponMap[type_blaster] = 0;
+  if (defaultWeapon != type_shotgun)
+	  m_WeaponMap[type_shotgun] = 0;
+  if (defaultWeapon != type_rail_gun)
+	  m_WeaponMap[type_rail_gun] = 0;
+  if (defaultWeapon != type_rocket_launcher)
+	  m_WeaponMap[type_rocket_launcher] = 0;
+  if (defaultWeapon != type_HealingRayGun)
+	  m_WeaponMap[type_HealingRayGun] = 0;
+
+
+
 }
-
 
 //-------------------------------- SelectWeapon -------------------------------
 //
@@ -105,7 +142,7 @@ void Raven_WeaponSystem::SelectWeapon()
 
   else
   {
-    m_pCurrentWeapon = m_WeaponMap[type_blaster];
+    m_pCurrentWeapon = m_WeaponMap[defaultWeapon];
   }
 }
 
@@ -193,7 +230,11 @@ void Raven_WeaponSystem::TakeAimAndShoot()const
        m_dAimPersistance) )
   {
 		//the position the weapon will be aimed at
-		  Vector2D AimingPos = m_pOwner->GetTargetBot()->GetPreviousState(m_dReactionTime).Pos();
+	  Vector2D AimingPos;
+	  if(GetCurrentWeapon()->GetType() == type_HealingRayGun)
+		   AimingPos = m_pOwner->GetTargetBot()->Pos();
+	  else
+		   AimingPos = m_pOwner->GetTargetBot()->GetPreviousState(m_dReactionTime).Pos();
 
 		//if the current weapon is not an instant hit type gun the target position
 		//must be adjusted to take into account the predicted movement of the 
@@ -211,7 +252,10 @@ void Raven_WeaponSystem::TakeAimAndShoot()const
 					m_dReactionTime) &&
 				   m_pOwner->hasLOSto(AimingPos) )
 				  {
-					AddNoiseToAim(AimingPos);
+
+				  if (GetCurrentWeapon()->GetType() != type_HealingRayGun)
+					  AddNoiseToAim(AimingPos);
+					
 
 					GetCurrentWeapon()->ShootAt(AimingPos);
 				  }

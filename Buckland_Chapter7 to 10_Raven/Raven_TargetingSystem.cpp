@@ -15,7 +15,7 @@ Raven_TargetingSystem::Raven_TargetingSystem(Raven_Bot* owner):m_pOwner(owner),
 //----------------------------- Update ----------------------------------------
 
 //-----------------------------------------------------------------------------
-void Raven_TargetingSystem::Update()
+void Raven_TargetingSystem::GetEnemyTarget()
 {
   double ClosestDistSoFar = MaxDouble;
   m_pCurrentTarget       = 0;
@@ -57,7 +57,34 @@ void Raven_TargetingSystem::Update()
 
 }
 
+void Raven_TargetingSystem::GetAlliedTarget()
+{
+	double LowestHp = 10000000;
+	m_pCurrentTarget = 0;
 
+	//grab a list of all the opponents the owner can sense
+	std::list<Raven_Bot*> SensedBots;
+	SensedBots = m_pOwner->GetSensoryMem()->GetListOfRecentlySensedOpponents();
+
+	std::list<Raven_Bot*>::const_iterator curBot = SensedBots.begin();
+
+	for (curBot; curBot != SensedBots.end(); ++curBot)
+	{
+		//make sure the bot is alive and that it is not the owner
+		if ((*curBot)->isAlive() && (*curBot != m_pOwner) &&  (*curBot)->SameTeam(m_pOwner))
+		{
+			double health = (*curBot)->Health();
+
+
+			if (health < LowestHp && health != (*curBot)->MaxHealth())
+			{
+				LowestHp = health;
+				m_pCurrentTarget = *curBot;
+				m_pOwner->SetTargetLowLeader(nullptr);
+			}
+		}
+	}
+}
 
 
 bool Raven_TargetingSystem::isTargetWithinFOV()const

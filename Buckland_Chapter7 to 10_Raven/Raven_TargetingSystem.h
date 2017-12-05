@@ -38,7 +38,8 @@ public:
   //if there are no opponents that have had their memory records updated
   //within the memory span of the owner then the current target is set
   //to null
-  void       Update();
+  void       GetAlliedTarget();
+  void       GetEnemyTarget();
 
   //returns true if there is a currently assigned target
   bool       isTargetPresent()const{return m_pCurrentTarget != 0;}

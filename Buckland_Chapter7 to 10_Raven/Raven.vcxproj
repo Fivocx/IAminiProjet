@@ -217,11 +217,13 @@
   <ItemGroup>
     <ClCompile Include="AttackLeaderTargetGoal_Evaluator.cpp" />
     <ClCompile Include="Goal_AttackLeaderTarget.cpp" />
+    <ClCompile Include="Healer_Bot.cpp" />
     <ClCompile Include="main.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='boundschecker|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Projectile_HealingRay.cpp" />
     <ClCompile Include="Raven_Bot.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -532,10 +534,13 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='boundschecker|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Weapon_HealingRayGun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackLeaderTargetGoal_Evaluator.h" />
     <ClInclude Include="Goal_AttackLeaderTarget.h" />
+    <ClInclude Include="Healer_Bot.h" />
+    <ClInclude Include="Projectile_HealingRay.h" />
     <ClInclude Include="Raven_Bot.h" />
     <ClInclude Include="Raven_Game.h" />
     <ClInclude Include="Raven_Map.h" />
@@ -648,6 +653,7 @@
     <ClInclude Include="..\Common\2D\Wall2D.h" />
     <ClInclude Include="..\Common\2D\WallIntersectionTests.h" />
     <ClInclude Include="..\Common\misc\WindowUtils.h" />
+    <ClInclude Include="Weapon_HealingRayGun.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua" />

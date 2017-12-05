@@ -3,7 +3,6 @@
 
 #include <string>
 
-// test bobobobo123123123
 enum 
 {
   type_wall,
@@ -19,7 +18,8 @@ enum
   type_obstacle,
   type_sliding_door,
   type_door_trigger,
-  type_grenade
+  type_grenade,
+  type_HealingRayGun
 };
 
 
@@ -53,6 +53,10 @@ inline std::string GetNameOfType(int w)
   case type_rail_gun:
     
     s = "Railgun"; break;
+
+  case type_HealingRayGun:
+
+	  s = "Healing Ray Gun"; break;
 
   case type_blaster:
     

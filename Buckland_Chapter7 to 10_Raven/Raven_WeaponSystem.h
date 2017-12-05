@@ -36,7 +36,7 @@ private:
 
 private:
 
-
+	unsigned int defaultWeapon;
   Raven_Bot*       m_pOwner;
 
   //pointers to the weapons the bot is carrying (a bot may only carry one
@@ -75,12 +75,13 @@ public:
   Raven_WeaponSystem(Raven_Bot* owner,
                      double      ReactionTime,
                      double      AimAccuracy,
-                     double      AimPersistance);
+                     double      AimPersistance,
+					 unsigned int avalaibleWeapons);
   
   ~Raven_WeaponSystem();
 
   //sets up the weapon map with just one weapon: the blaster
-  void          Initialize();
+  void          Initialize(unsigned int);
 
   //this method aims the bot's current weapon at the target (if there is a
   //target) and, if aimed correctly, fires a round. (Called each update-step

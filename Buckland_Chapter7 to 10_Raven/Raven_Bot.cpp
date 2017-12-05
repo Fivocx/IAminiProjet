@@ -18,8 +18,7 @@
 
 #include "goals/Raven_Goal_Types.h"
 #include "goals/Goal_Think.h"
-
-
+#include "Healer_Bot.h"
 #include "Debug/DebugConsole.h"
 
 //-------------------------- ctor ---------------------------------------------
@@ -79,10 +78,14 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreE
   //create the targeting system
   m_pTargSys = new Raven_TargetingSystem(this);
 
+
+
+
   m_pWeaponSys = new Raven_WeaponSystem(this,
 										m_dReactionTime,
                                         script->GetDouble("Bot_AimAccuracy"),
-                                        script->GetDouble("Bot_AimPersistance"));
+                                        script->GetDouble("Bot_AimPersistance"),
+										GetWeaponType());
 
   m_pSensoryMem = new Raven_SensoryMemory(this, script->GetDouble("Bot_MemorySpan"));
   MovingEntity::Update();
@@ -117,12 +120,11 @@ void Raven_Bot::Spawn(Vector2D pos)
     m_pBrain->RemoveAllSubgoals();
     m_pTargSys->ClearTarget();
     SetPos(pos);
-    m_pWeaponSys->Initialize();
+    m_pWeaponSys->Initialize(GetWeaponType());
     RestoreHealthToMaximum();
 }
 
-//-------------------------------- Update -------------------------------------
-//
+
 void Raven_Bot::Update()
 {
 
@@ -142,7 +144,7 @@ void Raven_Bot::Update()
     //to be the current target
     if (m_pTargetSelectionRegulator->isReady())
     {      
-      m_pTargSys->Update();
+      m_pTargSys->GetEnemyTarget();
     }
 
     //appraise and arbitrate between all possible high level goals
@@ -260,6 +262,7 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
     m_pTargSys->ClearTarget();
 
     return true;
+
 
   case Msg_GunshotSound:
 
@@ -642,4 +645,15 @@ double Raven_Bot::RelativeTangencialSpeed(Raven_Bot* target)
 	double PerpSpeed = TargetVelocity.Dot(distancePerp);
 	double TangentialSpeed = abs(tan(PerpSpeed / DistToTarget)) * 1000;
 	return TangentialSpeed;
+}
+
+unsigned int Raven_Bot::GetWeaponType()
+{
+	unsigned int avalaibleWeapons;
+	if (Healer_Bot* child = dynamic_cast<Healer_Bot*>(this)) {
+		avalaibleWeapons = type_HealingRayGun ;
+	}
+	else
+		avalaibleWeapons =  type_blaster ;
+	return avalaibleWeapons;
 }

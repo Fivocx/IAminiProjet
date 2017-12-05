@@ -274,6 +274,15 @@
     <ClCompile Include="Goal_AttackLeaderTarget.cpp">
       <Filter>AI\goals\composite</Filter>
     </ClCompile>
+    <ClCompile Include="Healer_Bot.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile_HealingRay.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon_HealingRayGun.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -617,6 +626,15 @@
     </ClInclude>
     <ClInclude Include="Goal_AttackLeaderTarget.h">
       <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="Healer_Bot.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile_HealingRay.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon_HealingRayGun.h">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
