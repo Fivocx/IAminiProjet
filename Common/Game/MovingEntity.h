@@ -14,6 +14,7 @@
 
 #include <cassert>
 #include <queue>
+#include <cmath>
 
 #include "2D/Vector2D.h"
 #include "Game/BaseGameEntity.h"
@@ -90,6 +91,8 @@ public:
 
 
   virtual ~MovingEntity(){}
+
+  virtual void Update() { UpdatePreviousStates(); }
 
   //accessors
   Vector2D  Velocity()const{return m_vVelocity;}
@@ -181,20 +184,19 @@ inline void MovingEntity::SetHeading(Vector2D new_heading)
   m_vSide = m_vHeading.Perp();
 }
 
-void MovingEntity::UpdatePreviousStates()
+inline void MovingEntity::UpdatePreviousStates()
 {
 	lastStates.push_front(pStates(m_vVelocity, m_vHeading, m_vPosition));
-	if (lastStates.size() > TimeRemembered / FrameRate)
+	if (lastStates.size() > TimeRemembered * FrameRate)
 		lastStates.pop_back();
 	
 }
 
-pStates	MovingEntity::GetPreviousState(double timeSpent)
+inline pStates	MovingEntity::GetPreviousState(double timeSpent)
 {
-	if (timeSpent > TimeRemembered){
-		timeSpent = TimeRemembered / FrameRate;
-	}
-	int framesAgo = (int)(timeSpent / FrameRate);
+	int framesAgo = (int)(timeSpent * FrameRate);
+	framesAgo = min(lastStates.size() - 1, framesAgo);
+	framesAgo = max(0, framesAgo);
 	return lastStates[framesAgo];
 }
 

@@ -563,11 +563,6 @@ double time = timer.CurrentTime();
       Sleep(2);
 
 
-double newTime = timer.CurrentTime();
-debug_con << FrameRate << "" << "";
-time = newTime;
-
-
    }//end while
 
   }//end try block

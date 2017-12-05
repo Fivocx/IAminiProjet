@@ -123,6 +123,8 @@ void Raven_Bot::Spawn(Vector2D pos)
 //
 void Raven_Bot::Update()
 {
+
+  MovingEntity::Update();
   //process the currently active goal. Note this is required even if the bot
   //is under user control. This is because a goal is created whenever a user 
   //clicks on an area of the map that necessitates a path planning request.
@@ -164,7 +166,7 @@ void Raven_Bot::Update()
     //and takes a shot if a shot is possible
     m_pWeaponSys->TakeAimAndShoot();
   }
-  MovingEntity::Update();
+
 }
 
 
