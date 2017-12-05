@@ -42,7 +42,7 @@ class MovingEntity : public BaseGameEntity
 protected:
   const float TimeRemembered = 1;
 
-  std::deque<pStates> lastStates;
+  std::deque<pStates> lastStates = {};
 
   Vector2D    m_vVelocity;
   
@@ -194,6 +194,9 @@ inline void MovingEntity::UpdatePreviousStates()
 
 inline pStates	MovingEntity::GetPreviousState(double timeSpent)
 {
+	if (lastStates.empty())
+		return pStates(Velocity(), Heading(), Pos());
+
 	int framesAgo = (int)(timeSpent * FrameRate);
 	framesAgo = min(lastStates.size() - 1, framesAgo);
 	framesAgo = max(0, framesAgo);

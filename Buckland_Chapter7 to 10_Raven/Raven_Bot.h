@@ -9,6 +9,7 @@
 //
 //  Desc:
 //-----------------------------------------------------------------------------
+#include <deque>
 #include <vector>
 #include <iosfwd>
 #include <map>
@@ -16,6 +17,7 @@
 #include "game/MovingEntity.h"
 #include "misc/utils.h"
 #include "Raven_TargetingSystem.h"
+#include "time/crudetimer.h"
 
 
 class Raven_PathPlanner;
@@ -44,7 +46,7 @@ private:
   //an opponent the instant it becomes visible.
   double            m_dReactionTime;
 
-
+  std::deque<double>				m_pShotsFired;
 
 
   //alive, dead or spawning?
@@ -232,6 +234,8 @@ public:
   Raven_WeaponSystem* const          GetWeaponSys()const{return m_pWeaponSys;}
   Raven_SensoryMemory* const         GetSensoryMem()const{return m_pSensoryMem;}
 
+  double RelativeTangencialSpeed(Raven_Bot* target);
+
   bool GetisLeader()
   {
 	  return isLeader;
@@ -255,6 +259,29 @@ public:
   Raven_Bot* const GetOwnLeader()
   {
 	  return leaderPtr;
+  }
+
+  void AddShotFire()
+  {
+	  m_pShotsFired.push_front(Clock->GetCurrentTime());
+	  if (m_pShotsFired.size() > 32)
+		  m_pShotsFired.pop_back();
+  }
+  int GetAmountOfShotFiredSince(double TimeSpawn)
+  {
+	  double timeStart = Clock->GetCurrentTime() - TimeSpawn;
+
+	  int ShotsCount = 0;
+	  bool StillInTimeSpawn = true;
+
+	  while (ShotsCount < m_pShotsFired.size() && StillInTimeSpawn)
+	  {
+		  if (m_pShotsFired[ShotsCount] > timeStart)
+			  ShotsCount++;
+		  else
+			  StillInTimeSpawn = true;
+	  }
+	  return ShotsCount;
   }
 };
 

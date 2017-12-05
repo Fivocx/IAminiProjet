@@ -13,6 +13,7 @@
 //-----------------------------------------------------------------------------
 #include <map>
 #include "2d/vector2d.h"
+#include "../../Common/Fuzzy/FuzzyModule.h"
 
 class Raven_Bot;
 class Raven_Weapon;
@@ -21,12 +22,20 @@ class Raven_Weapon;
 
 class Raven_WeaponSystem
 {
+
+public:
+	FuzzyModule		m_FuzzyModule;
+	const double	RecoilTimeSpawn = 10;
+	void			InitializeFuzzyModule();
+	double			SetAccuracy();
+
 private:
   
   //a map of weapon instances indexed into by type
   typedef std::map<int, Raven_Weapon*>  WeaponMap;
 
 private:
+
 
   Raven_Bot*       m_pOwner;
 
@@ -108,6 +117,8 @@ public:
 
   void          RenderCurrentWeapon()const;
   void          RenderDesirabilities()const;
+
+
 };
 
 #endif

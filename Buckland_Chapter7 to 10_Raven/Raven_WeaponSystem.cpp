@@ -10,6 +10,7 @@
 #include "Raven_UserOptions.h"
 #include "2D/transformations.h"
 
+#include "../../Common/fuzzy/FuzzyOperators.h"
 #include <cmath>
 
 
@@ -43,6 +44,7 @@ Raven_WeaponSystem::~Raven_WeaponSystem()
 //-----------------------------------------------------------------------------
 void Raven_WeaponSystem::Initialize()
 {
+	InitializeFuzzyModule();
   //delete any existing weapons
   WeaponMap::iterator curW;
   for (curW = m_WeaponMap.begin(); curW != m_WeaponMap.end(); ++curW)
@@ -72,15 +74,9 @@ void Raven_WeaponSystem::SelectWeapon()
   if (m_pOwner->GetTargetSys()->isTargetPresent())
   {
     //calculate the distance to the target
-	  Vector2D PositionDifference = m_pOwner->Pos() - m_pOwner->GetTargetSys()->GetTarget()->GetPreviousState(m_dReactionTime).Pos();
-    double DistToTarget = PositionDifference.Length();
-	Vector2D TargetVelocity = m_pOwner->GetTargetSys()->GetTarget()->GetPreviousState(m_dReactionTime).Velocity();
 
-	Vector2D distancePerp = PositionDifference.Perp();
-	distancePerp.Normalize();
-	double PerpSpeed= TargetVelocity.Dot(distancePerp);
-	double TangentialSpeed = abs(tan(PerpSpeed / DistToTarget)) * 1000;
-
+	double TangentialSpeed = m_pOwner->RelativeTangencialSpeed(m_pOwner->GetTargetSys()->GetTarget());
+	double DistToTarget = (m_pOwner->Pos() - m_pOwner->GetTargetSys()->GetTarget()->GetPreviousState(m_dReactionTime).Pos()).Length();
 
     //for each weapon in the inventory calculate its desirability given the 
     //current situation. The most desirable weapon is selected
@@ -190,49 +186,51 @@ void Raven_WeaponSystem::TakeAimAndShoot()const
   //very recently gone out of view (this latter condition is to ensure the 
   //weapon is aimed at the target even if it temporarily dodges behind a wall
   //or other cover)
+
+
   if (m_pOwner->GetTargetSys()->isTargetShootable() ||
       (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenOutOfView() < 
        m_dAimPersistance) )
   {
-    //the position the weapon will be aimed at
-	  Vector2D AimingPos = m_pOwner->GetTargetBot()->GetPreviousState(m_dReactionTime).Pos();
-    
-    //if the current weapon is not an instant hit type gun the target position
-    //must be adjusted to take into account the predicted movement of the 
-    //target
-    if (GetCurrentWeapon()->GetType() == type_rocket_launcher ||
-        GetCurrentWeapon()->GetType() == type_blaster)
-    {
-      AimingPos = PredictFuturePositionOfTarget();
+		//the position the weapon will be aimed at
+		  Vector2D AimingPos = m_pOwner->GetTargetBot()->GetPreviousState(m_dReactionTime).Pos();
 
-      //if the weapon is aimed correctly, there is line of sight between the
-      //bot and the aiming position and it has been in view for a period longer
-      //than the bot's reaction time, shoot the weapon
-      if ( m_pOwner->RotateFacingTowardPosition(AimingPos) &&
-           (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
-            m_dReactionTime) &&
-           m_pOwner->hasLOSto(AimingPos) )
-      {
-        AddNoiseToAim(AimingPos);
+		//if the current weapon is not an instant hit type gun the target position
+		//must be adjusted to take into account the predicted movement of the 
+		//target
+		if (GetCurrentWeapon()->GetType() == type_rocket_launcher ||
+			GetCurrentWeapon()->GetType() == type_blaster)
+			{
+			  AimingPos = PredictFuturePositionOfTarget();
 
-        GetCurrentWeapon()->ShootAt(AimingPos);
-      }
-    }
+			  //if the weapon is aimed correctly, there is line of sight between the
+			  //bot and the aiming position and it has been in view for a period longer
+			  //than the bot's reaction time, shoot the weapon
+			  if ( m_pOwner->RotateFacingTowardPosition(AimingPos) &&
+				   (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
+					m_dReactionTime) &&
+				   m_pOwner->hasLOSto(AimingPos) )
+				  {
+					AddNoiseToAim(AimingPos);
 
-    //no need to predict movement, aim directly at target
-    else
-    {
-      //if the weapon is aimed correctly and it has been in view for a period
-      //longer than the bot's reaction time, shoot the weapon
-      if ( m_pOwner->RotateFacingTowardPosition(AimingPos) &&
-           (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
-            m_dReactionTime) )
-      {
-        AddNoiseToAim(AimingPos);
+					GetCurrentWeapon()->ShootAt(AimingPos);
+				  }
+		}
+
+		//no need to predict movement, aim directly at target
+		else
+		{
+			  //if the weapon is aimed correctly and it has been in view for a period
+			  //longer than the bot's reaction time, shoot the weapon
+			  if ( m_pOwner->RotateFacingTowardPosition(AimingPos) &&
+				   (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
+					m_dReactionTime) )
+			  {
+				AddNoiseToAim(AimingPos);
         
-        GetCurrentWeapon()->ShootAt(AimingPos);
-      }
-    }
+				GetCurrentWeapon()->ShootAt(AimingPos);
+			  }
+		 }
 
   }
   
@@ -249,13 +247,15 @@ void Raven_WeaponSystem::TakeAimAndShoot()const
 //  adds a random deviation to the firing angle not greater than m_dAimAccuracy 
 //  rads
 //-----------------------------------------------------------------------------
+
 void Raven_WeaponSystem::AddNoiseToAim(Vector2D& AimingPos)const
 {
-  Vector2D toPos = AimingPos - m_pOwner->Pos();
-
-  Vec2DRotateAroundOrigin(toPos, RandInRange(-m_dAimAccuracy, m_dAimAccuracy));
-
-  AimingPos = toPos + m_pOwner->Pos();
+	Vector2D toPos = AimingPos - m_pOwner->Pos();
+	
+	// le m_dAimAccuracy est fixe avec un comportement flou, voir plus bas
+	Vec2DRotateAroundOrigin(toPos, RandInRange(-m_dAimAccuracy, m_dAimAccuracy)) ;
+	
+	AimingPos = toPos + m_pOwner->Pos();
 }
 
 //-------------------------- PredictFuturePositionOfTarget --------------------
@@ -304,6 +304,7 @@ int Raven_WeaponSystem::GetAmmoRemainingForWeapon(unsigned int weapon_type)
 //-----------------------------------------------------------------------------
 void Raven_WeaponSystem::ShootAt(Vector2D pos)const
 {
+  m_pOwner->AddShotFire();
   GetCurrentWeapon()->ShootAt(pos);
 }
 
@@ -340,4 +341,50 @@ void Raven_WeaponSystem::RenderDesirabilities()const
         offset+=15;
       }
     }
+}
+
+
+
+double Raven_WeaponSystem::SetAccuracy()
+{
+
+	double shotsFiredRecently =  m_pOwner->GetAmountOfShotFiredSince(RecoilTimeSpawn);
+	double TangencialSpeed = (m_pOwner->GetTargetSys()->GetTarget() != nullptr ? m_pOwner->RelativeTangencialSpeed(m_pOwner->GetTargetBot()) : 0);
+
+	m_FuzzyModule.Fuzzify("TangencialSpeed", TangencialSpeed);
+	m_FuzzyModule.Fuzzify("ShotsFiredRecently", shotsFiredRecently);
+
+	m_dAimAccuracy = m_FuzzyModule.DeFuzzify("Accuracy", FuzzyModule::max_av);
+	return m_dAimAccuracy;
+}
+
+
+void Raven_WeaponSystem::InitializeFuzzyModule()
+{
+	FuzzyVariable& TanSpeed = m_FuzzyModule.CreateFLV("TangencialSpeed");
+	FzSet& TanS_Fast = TanSpeed.AddRightShoulderSet("Fast", 3.5, 5, 100);
+	FzSet& TanS_Medium = TanSpeed.AddTriangularSet("Medium", 1.5, 3, 4.5);
+	FzSet& TanS_Slow = TanSpeed.AddLeftShoulderSet("Slow", 0, 1, 2.5);
+
+	FuzzyVariable& ShotsFired = m_FuzzyModule.CreateFLV("ShotsFiredRecently");
+	FzSet& sFired_ALot = ShotsFired.AddLeftShoulderSet("A_Lot_of_shots", 5, 8, 64);
+	FzSet& sFired_Acouple = ShotsFired.AddTriangularSet("A_Couple_of_shots", 2, 4, 7);
+	FzSet& sFired_Few = ShotsFired.AddRightShoulderSet("Few_of_shots", 0, 1, 3);
+
+	FuzzyVariable& Accuracy = m_FuzzyModule.CreateFLV("Accuracy");
+	FzSet& TopGun = Accuracy.AddLeftShoulderSet("TopGun", 0, 0.25, 0.5);
+	FzSet& OK = Accuracy.AddTriangularSet("OK", 0.25, 0.50, 0.125);
+	FzSet& Noob = Accuracy.AddRightShoulderSet("Noob", 0.75, 0.15, 0.25);
+
+	m_FuzzyModule.AddRule(FzAND(sFired_ALot, TanS_Fast), FzVery(Noob));
+	m_FuzzyModule.AddRule(FzAND(sFired_Acouple, TanS_Fast), Noob);
+	m_FuzzyModule.AddRule(FzAND(sFired_Few, TanS_Fast), OK);
+
+	m_FuzzyModule.AddRule(FzAND(sFired_ALot, TanS_Medium), Noob);
+	m_FuzzyModule.AddRule(FzAND(sFired_Acouple, TanS_Medium), OK);
+	m_FuzzyModule.AddRule(FzAND(sFired_Few, TanS_Medium), TopGun);
+
+	m_FuzzyModule.AddRule(FzAND(sFired_ALot, TanS_Slow), OK);
+	m_FuzzyModule.AddRule(FzAND(sFired_Acouple, TanS_Slow), TopGun);
+	m_FuzzyModule.AddRule(FzAND(sFired_Few, TanS_Slow), FzVery(TopGun));
 }

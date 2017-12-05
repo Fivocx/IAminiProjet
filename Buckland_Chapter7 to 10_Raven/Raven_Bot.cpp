@@ -51,7 +51,7 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreE
 	isLeader(isleader),
 	equipe2(autreEquipe),
 	leaderPtr(leaderPt)
-           
+      
 {
   SetEntityType(type_bot);
 
@@ -85,6 +85,7 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreE
                                         script->GetDouble("Bot_AimPersistance"));
 
   m_pSensoryMem = new Raven_SensoryMemory(this, script->GetDouble("Bot_MemorySpan"));
+  MovingEntity::Update();
 }
 
 //-------------------------------- dtor ---------------------------------------
@@ -165,6 +166,7 @@ void Raven_Bot::Update()
 
     //this method aims the bot's current weapon at the current target
     //and takes a shot if a shot is possible
+	m_pWeaponSys->SetAccuracy();
     m_pWeaponSys->TakeAimAndShoot();
   }
 
@@ -626,4 +628,18 @@ void Raven_Bot::IncreaseHealth(unsigned int val)
 {
   m_iHealth+=val; 
   Clamp(m_iHealth, 0, m_iMaxHealth);
+}
+
+
+double Raven_Bot::RelativeTangencialSpeed(Raven_Bot* target)
+{
+	Vector2D PositionDifference = Pos() - target->GetPreviousState(m_dReactionTime).Pos();
+	double DistToTarget = PositionDifference.Length();
+
+	Vector2D TargetVelocity = target->GetPreviousState(m_dReactionTime).Velocity();
+	Vector2D distancePerp = PositionDifference.Perp();
+	distancePerp.Normalize();
+	double PerpSpeed = TargetVelocity.Dot(distancePerp);
+	double TangentialSpeed = abs(tan(PerpSpeed / DistToTarget)) * 1000;
+	return TangentialSpeed;
 }

@@ -562,7 +562,6 @@ double time = timer.CurrentTime();
       //give the OS a little time
       Sleep(2);
 
-
    }//end while
 
   }//end try block
