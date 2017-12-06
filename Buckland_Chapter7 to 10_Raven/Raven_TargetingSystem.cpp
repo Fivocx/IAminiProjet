@@ -35,7 +35,7 @@ void Raven_TargetingSystem::GetEnemyTarget()
 	  for (curBot; curBot != SensedBots.end(); ++curBot)
 	  {
 		  //make sure the bot is alive and that it is not the owner
-		  if ((*curBot)->isAlive() && (*curBot != m_pOwner) && ((*curBot)->GetisEquipe2() != m_pOwner->GetisEquipe2()))
+		  if ((*curBot)->isAlive() && (*curBot != m_pOwner) ) //&& ((*curBot)->GetisEquipe2() != m_pOwner->GetisEquipe2())
 		  {
 			  double dist = Vec2DDistanceSq((*curBot)->Pos(), m_pOwner->Pos());
 
@@ -64,14 +64,14 @@ void Raven_TargetingSystem::GetAlliedTarget()
 
 	//grab a list of all the opponents the owner can sense
 	std::list<Raven_Bot*> SensedBots;
-	SensedBots = m_pOwner->GetSensoryMem()->GetListOfRecentlySensedOpponents();
+	SensedBots = m_pOwner->GetSensoryMem()->GetListOfRecentlySensedAllies();
 
 	std::list<Raven_Bot*>::const_iterator curBot = SensedBots.begin();
 
 	for (curBot; curBot != SensedBots.end(); ++curBot)
 	{
 		//make sure the bot is alive and that it is not the owner
-		if ((*curBot)->isAlive() && (*curBot != m_pOwner) &&  (*curBot)->SameTeam(m_pOwner))
+		if ((*curBot)->isAlive() && (*curBot != m_pOwner))// &&  (*curBot)->SameTeam(m_pOwner))
 		{
 			double health = (*curBot)->Health();
 

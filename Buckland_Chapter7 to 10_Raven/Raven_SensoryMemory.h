@@ -109,9 +109,11 @@ public:
   //this method returns a list of all the opponents that have had their
   //records updated within the last m_dMemorySpan seconds.
   std::list<Raven_Bot*> GetListOfRecentlySensedOpponents()const;
+  std::list<Raven_Bot*> GetListOfRecentlySensedAllies()const;
+  std::list<Raven_Bot*> GetListOfRecentlySensedUnits()const;
 
   void     RenderBoxesAroundRecentlySensed()const;
-
+  void	   CallEnemyToAllies(Raven_Bot* newBot);
 };
 
 

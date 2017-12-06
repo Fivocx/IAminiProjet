@@ -395,7 +395,7 @@ double Raven_WeaponSystem::SetAccuracy()
 	double shotsFiredRecently =  m_pOwner->GetAmountOfShotFiredSince(RecoilTimeSpawn);
 	double TangencialSpeed = (m_pOwner->GetTargetSys()->GetTarget() != nullptr ? m_pOwner->RelativeTangencialSpeed(m_pOwner->GetTargetBot()) : 0);
 
-	m_FuzzyModule.Fuzzify("TangencialSpeed", TangencialSpeed);
+	m_FuzzyModule.Fuzzify("TangencialSpeed", min(TangencialSpeed, 100));
 	m_FuzzyModule.Fuzzify("ShotsFiredRecently", shotsFiredRecently);
 
 	m_dAimAccuracy = m_FuzzyModule.DeFuzzify("Accuracy", FuzzyModule::max_av);

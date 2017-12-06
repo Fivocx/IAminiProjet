@@ -93,7 +93,7 @@ inline double ShotGun::GetDesirability(double DistToTarget, double Perpendicular
   else
   {
     //fuzzify distance and amount of ammo
-	m_FuzzyModule.Fuzzify("TangencialSpeed", PerpendicularSpeed);
+	m_FuzzyModule.Fuzzify("TangencialSpeed", min(PerpendicularSpeed, 100));
     m_FuzzyModule.Fuzzify("DistanceToTarget", DistToTarget);
     m_FuzzyModule.Fuzzify("AmmoStatus", (double)m_iNumRoundsLeft);
 
