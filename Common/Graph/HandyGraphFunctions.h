@@ -153,7 +153,7 @@ void GraphHelper_DrawUsingGDI(const graph_type& graph, int color, bool DrawNodeI
 
     if (DrawNodeIDs)
     {
-      gdi->TextColor(200,200,200);
+      gdi->TextColor(0,0,0);
       gdi->TextAtPos((int)pN->Pos().x+5, (int)pN->Pos().y-5, ttos(pN->Index()));
     }
 

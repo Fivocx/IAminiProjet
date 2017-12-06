@@ -110,7 +110,36 @@ void Trigger_WeaponGiver::Render()
             gdi->RedPen();
             gdi->ClosedShape(m_vecRLVBTrans);
         }
-      
+		break;
+	case type_grenade:
+	{
+		const int NumWeaponVerts = 8;
+		std::vector<Vector2D> m_vecWeaponVB;
+		const Vector2D weapon[NumWeaponVerts] = { Vector2D(0, -3),
+			Vector2D(6, -3),
+			Vector2D(6, -1),
+			Vector2D(15, -1),
+			Vector2D(15, 1),
+			Vector2D(6, 1),
+			Vector2D(6, 3),
+			Vector2D(0, 3)
+		};
+		for (int vtx = 0; vtx<NumWeaponVerts; ++vtx)
+		{
+			m_vecWeaponVB.push_back(weapon[vtx]);
+		}
+
+		Vector2D facing(-1, 0);
+
+		m_vecRLVBTrans = WorldTransform(m_vecWeaponVB,
+			Pos(),
+			facing,
+			facing.Perp(),
+			Vector2D(1, 1));
+
+		gdi->PurplePen();
+		gdi->ClosedShape(m_vecRLVBTrans);
+	}
         break;
 
     }//end switch
