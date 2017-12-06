@@ -112,7 +112,6 @@ protected:
 	bool                               m_bHit;
 
 	//set to true when a human player takes over control of the bot
-	bool                               m_bPossessed;
 
 	//a vertex buffer containing the bot's geometry
 	std::vector<Vector2D>              m_vecBotVB;
@@ -146,13 +145,11 @@ public:
 	virtual ~Raven_Bot();
 
 	//the usual suspects
+	bool                               m_bPossessed;
 	void         Render();
 	void         Update();
 	bool         HandleMessage(const Telegram& msg);
-	Vector2D	   incrPosX();
-	Vector2D	   decrPosX();
-	Vector2D	   incrPosY();
-	Vector2D	   decrPosY();
+	Vector2D	   getPos();
 	void         Write(std::ostream&  os)const {/*not implemented*/ }
 	void         Read(std::ifstream& is) {/*not implemented*/ }
 

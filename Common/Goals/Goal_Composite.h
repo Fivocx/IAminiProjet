@@ -77,16 +77,27 @@ public:
 template <class entity_type>
 void Goal_Composite<entity_type>::RemoveAllSubgoals()
 {
-  for (SubgoalList::iterator it = m_SubGoals.begin();
-       it != m_SubGoals.end();
-       ++it)
-  {  
-    (*it)->Terminate();
-    
-    delete *it;
-  }
 
-  m_SubGoals.clear();
+	/*for (int n = 0; n < m_SubGoals.size(); n++) {
+	m_SubGoals[n].Terminate();
+	delete m_SubGoals[n];
+
+	}*/
+	try {
+		for (SubgoalList::iterator it = m_SubGoals.begin();
+			it != m_SubGoals.end();
+			++it)
+		{
+			(*it)->Terminate();
+
+			delete *it;
+		}
+	}
+	catch (...) {
+		m_SubGoals.clear();
+	}
+	m_SubGoals.clear();
+
 }
  
 

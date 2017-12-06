@@ -27,7 +27,7 @@
 #include "goals/Goal_Think.h"
 #include "goals/Raven_Goal_Types.h"
 #include "Healer_Bot.h"
-
+#include<thread>
 
 //uncomment to write object creation/deletion to debug console
 //#define  LOG_CREATIONAL_STUFF
@@ -43,7 +43,12 @@ Raven_Game::Raven_Game():m_pSelectedBot(NULL),
                          m_pGraveMarkers(NULL)
 {
   //load in the default map
-  LoadMap(script->GetString("StartMap"));
+	w = false;
+	a = false;
+	s = false;
+	d = false;
+	LoadMap(script->GetString("StartMap"));
+	std::thread *avancer = new std::thread(&Raven_Game::Move, this);
 }
 
 
@@ -289,7 +294,10 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
 	{
 		rb = new Raven_Bot(this, Vector2D(), false, false, leader1);
 	}
-
+	if (i == 7) {
+		rb->m_bPossessed = true;
+		m_pSelectedBot = rb;
+	}
 
     //switch the default steering behaviors on
     rb->GetSteering()->WallAvoidanceOn();
@@ -477,78 +485,23 @@ void Raven_Game::ExorciseAnyPossessedBot()
 //  if the cursor is not over a bot then any selected bot/s will attempt to
 //  move to that position.
 //-----------------------------------------------------------------------------
-void Raven_Game::ClickW() {
-
-		//Vector2D p;
-		 m_pSelectedBot->decrPosY();
-	//	m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(p);
-}
-void Raven_Game::ClickA() {
-
-	//Vector2D p;
-	m_pSelectedBot->Speed();
-	 m_pSelectedBot->decrPosX();
-	//m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(p);
-}
-void Raven_Game::ClickS() {
-
-	//Vector2D p;
-	 m_pSelectedBot->incrPosY();
-	//m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(p);
-}
-void Raven_Game::ClickD() {
-
-	//Vector2D p;
-	 m_pSelectedBot->incrPosX();
-	//m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(p);
-}
-
-void Raven_Game::ClickRightMouseButton(POINTS p)
-{
-  Raven_Bot* pBot = GetBotAtPosition(POINTStoVector(p));
-
-  //if there is no selected bot just return;
-  if (!pBot && m_pSelectedBot == NULL) return;
-
-  //if the cursor is over a different bot to the existing selection,
-  //change selection
-  if (pBot && pBot != m_pSelectedBot)
-  { 
-    if (m_pSelectedBot) m_pSelectedBot->Exorcise();
-    m_pSelectedBot = pBot;
-
-    return;
-  }
-
-  //if the user clicks on a selected bot twice it becomes possessed(under
-  //the player's control)
-  if (pBot && pBot == m_pSelectedBot)
-  {
-    m_pSelectedBot->TakePossession();
-
-    //clear any current goals
-    m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
-  }
-
-  //if the bot is possessed then a right click moves the bot to the cursor
-  //position
- /* if (m_pSelectedBot->isPossessed())
-  {
-    //if the shift key is pressed down at the same time as clicking then the
-    //movement command will be queued
-    if (IS_KEY_PRESSED('Q'))
-    {
-      m_pSelectedBot->GetBrain()->QueueGoal_MoveToPosition(POINTStoVector(p));
-    }
-    else
-    {
-      //clear any current goals
-      m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
-
-
-      m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(POINTStoVector(p));
-    }
-  }*/
+void Raven_Game::Move() {
+	Vector2D p;
+	Goal_Think* brain = m_pSelectedBot->GetBrain();
+	while (true) {
+		p = m_pSelectedBot->getPos();
+		if (w == true)p.y -= 11;
+		if (a == true)p.x -= 11;
+		if (s == true)p.y += 11;
+		if (d == true)p.x += 11;
+		if (!m_pSelectedBot->isAtPosition(p)) {
+			brain->AddGoal_MoveToPosition(p);
+		}
+		while (!m_pSelectedBot->isAtPosition(p)) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		}
+		brain->RemoveAllSubgoals();
+	}
 }
 
 //---------------------- ClickLeftMouseButton ---------------------------------

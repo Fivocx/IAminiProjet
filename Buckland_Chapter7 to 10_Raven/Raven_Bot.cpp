@@ -291,31 +291,8 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
   default: return false;
   }
 }
+Vector2D  Raven_Bot::getPos() {
 
-Vector2D  Raven_Bot ::incrPosX() {
-
-	m_vPosition.x+=1;
-
-	return m_vPosition;
-
-}
-Vector2D  Raven_Bot::decrPosX() {
-
-	m_vPosition.x-=1;
-
-	return m_vPosition;
-
-}
-Vector2D  Raven_Bot::incrPosY() {
-
-	m_vPosition.y+=1;
-
-	return m_vPosition;
-
-}
-Vector2D  Raven_Bot::decrPosY() {
-
-	m_vPosition.y-=1;
 
 	return m_vPosition;
 

@@ -155,12 +155,26 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
            g_pRaven->ChangeWeaponOfPossessedBot(type_rail_gun);
 
            break;
+		 case 'W':
 
-         case 'X':
+			 g_pRaven->w = false;
 
-           g_pRaven->ExorciseAnyPossessedBot();
+			 break;
+		 case 'A':
 
-           break;
+			 g_pRaven->a = false;
+
+			 break;
+		 case 'S':
+
+			 g_pRaven->s = false;
+
+			 break;
+		 case 'D':
+
+			 g_pRaven->d = false;
+
+			 break;
 
          case VK_UP:
 
@@ -181,23 +195,19 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 		switch (wParam)
 		{
 		case 'W':
-
-			g_pRaven->ClickW();
+			g_pRaven->w = true;
 
 			break;
 		case 'A':
-
-			g_pRaven->ClickA();
+			g_pRaven->a = true;
 
 			break;
 		case 'S':
-
-			g_pRaven->ClickS();
+			g_pRaven->s = true;
 
 			break;
 		case 'D':
-
-			g_pRaven->ClickD();
+			g_pRaven->d = true;
 
 			break;
 		}
@@ -208,13 +218,6 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
     case WM_LBUTTONDOWN:
     {
       g_pRaven->ClickLeftMouseButton(MAKEPOINTS(lParam));
-    }
-    
-    break;
-
-   case WM_RBUTTONDOWN:
-    {
-      g_pRaven->ClickRightMouseButton(MAKEPOINTS(lParam));
     }
     
     break;
