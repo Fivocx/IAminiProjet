@@ -1,6 +1,6 @@
 #include "Weapon_HealingRayGun.h"
 #include "Raven_Bot.h"
-#include "../../Common/misc/Cgdi.h"
+#include "misc/Cgdi.h"
 #include "Raven_Game.h"
 #include "Raven_Map.h"
 #include "lua/Raven_Scriptor.h"

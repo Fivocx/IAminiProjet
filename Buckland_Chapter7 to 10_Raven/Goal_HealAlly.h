@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Common/Goals/Goal_Composite.h"
-#include "Goals\Raven_Goal_Types.h"
+#include "Goals/Goal_Composite.h"
+#include "Goals/Raven_Goal_Types.h"
 #include "Raven_Bot.h"
 
 

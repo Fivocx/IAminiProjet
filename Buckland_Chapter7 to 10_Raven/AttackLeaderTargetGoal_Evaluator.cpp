@@ -3,12 +3,12 @@
 #include "goals/Raven_Goal_Types.h"
 #include "Raven_WeaponSystem.h"
 #include "Raven_ObjectEnumerations.h"
-#include "../../Common/misc/cgdi.h"
-#include "../../Common/misc/Stream_Utility_Functions.h"
+#include "misc/Cgdi.h"
+#include "misc/Stream_Utility_Functions.h"
 #include "goals/Raven_Feature.h"
 
 
-#include "../../Common/debug/DebugConsole.h"
+#include "Debug/DebugConsole.h"
 
 //------------------ CalculateDesirability ------------------------------------
 //

@@ -219,7 +219,6 @@
     <ClCompile Include="armory\Weapon_Grenade.cpp" />
     <ClCompile Include="AttackLeaderTargetGoal_Evaluator.cpp" />
     <ClCompile Include="Goal_AttackLeaderTarget.cpp" />
-    <ClCompile Include="Goal_HealAlly.cpp" />
     <ClCompile Include="Healer_Bot.cpp" />
     <ClCompile Include="main.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -545,7 +544,6 @@
     <ClInclude Include="armory\Weapon_Grenade.h" />
     <ClInclude Include="AttackLeaderTargetGoal_Evaluator.h" />
     <ClInclude Include="Goal_AttackLeaderTarget.h" />
-    <ClInclude Include="Goal_HealAlly.h" />
     <ClInclude Include="Healer_Bot.h" />
     <ClInclude Include="Projectile_HealingRay.h" />
     <ClInclude Include="Raven_Bot.h" />

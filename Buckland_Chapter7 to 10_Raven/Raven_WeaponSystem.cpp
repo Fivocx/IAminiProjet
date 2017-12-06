@@ -3,7 +3,7 @@
 #include "armory/Weapon_RailGun.h"
 #include "armory/Weapon_ShotGun.h"
 #include "armory/Weapon_Blaster.h"
-#include "armory\Weapon_Grenade.h"
+#include "armory/Weapon_Grenade.h"
 #include "Weapon_HealingRayGun.h"
 #include "Raven_Bot.h"
 #include "misc/utils.h"
@@ -12,7 +12,7 @@
 #include "Raven_UserOptions.h"
 #include "2D/transformations.h"
 
-#include "../../Common/fuzzy/FuzzyOperators.h"
+#include "fuzzy/FuzzyOperators.h"
 #include <cmath>
 #include <vector>
 

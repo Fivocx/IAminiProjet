@@ -289,9 +289,6 @@
     <ClCompile Include="armory\Weapon_Grenade.cpp">
       <Filter>Game\weapons &amp; projectiles\weapons</Filter>
     </ClCompile>
-    <ClCompile Include="Goal_HealAlly.cpp">
-      <Filter>AI\goals\composite</Filter>
-    </ClCompile>
     <ClCompile Include="Trigger_SpawnLoot.cpp">
       <Filter>AI\Triggers</Filter>
     </ClCompile>
@@ -653,9 +650,6 @@
     </ClInclude>
     <ClInclude Include="armory\Weapon_Grenade.h">
       <Filter>Game\weapons &amp; projectiles\weapons</Filter>
-    </ClInclude>
-    <ClInclude Include="Goal_HealAlly.h">
-      <Filter>AI\goals\composite</Filter>
     </ClInclude>
     <ClInclude Include="Trigger_SpawnLoot.h">
       <Filter>AI\Triggers</Filter>

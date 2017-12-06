@@ -2,7 +2,7 @@
 #define GOAL_ATTACKLEADERTARGET_H
 #pragma warning (disable:4786)
 
-#include "../../Common/Goals/Goal_Composite.h"
+#include "Goals/Goal_Composite.h"
 #include "goals/Raven_Goal_Types.h"
 #include "../Buckland_Chapter7 to 10_Raven/Raven_Bot.h"
 
