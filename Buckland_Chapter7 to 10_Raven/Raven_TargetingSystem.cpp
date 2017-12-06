@@ -42,8 +42,8 @@ void Raven_TargetingSystem::GetEnemyTarget()
   }
   else */
 
-  const double selfDistanceWeigth = 0.33;
-  const double teamDistanceWeigth = 0.66;
+  const double selfDistanceWeigth = 0;
+  const double teamDistanceWeigth = 1;
 
   curBot = EnemyBots.begin();
 	for (curBot; curBot != EnemyBots.end(); ++curBot)
