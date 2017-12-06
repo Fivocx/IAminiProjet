@@ -98,6 +98,8 @@ public:
   //this method iterates through all the opponents in the game world and 
   //updates the records of those that are in the owner's FOV
   void     UpdateVision();
+  void	   AskAllyLocation(Raven_Bot* Ally);
+  void	   CallEnemyToAllies(Raven_Bot* newBot);
 
   bool     isOpponentShootable(Raven_Bot* pOpponent)const;
   bool     isOpponentWithinFOV(Raven_Bot* pOpponent)const;
@@ -113,7 +115,7 @@ public:
   std::list<Raven_Bot*> GetListOfRecentlySensedUnits()const;
 
   void     RenderBoxesAroundRecentlySensed()const;
-  void	   CallEnemyToAllies(Raven_Bot* newBot);
+
 };
 
 
