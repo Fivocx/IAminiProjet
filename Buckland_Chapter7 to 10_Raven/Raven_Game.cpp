@@ -488,6 +488,7 @@ void Raven_Game::ExorciseAnyPossessedBot()
 void Raven_Game::Move() {
 	Vector2D p;
 	Goal_Think* brain = m_pSelectedBot->GetBrain();
+	brain->RemoveAllSubgoals();
 	while (true) {
 		p = m_pSelectedBot->getPos();
 		if (w == true)p.y -= 11;
@@ -497,10 +498,11 @@ void Raven_Game::Move() {
 		if (!m_pSelectedBot->isAtPosition(p)) {
 			brain->AddGoal_MoveToPosition(p);
 		}
-		while (!m_pSelectedBot->isAtPosition(p)) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		/*while (!m_pSelectedBot->isAtPosition(p)) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		}
-		brain->RemoveAllSubgoals();
+		}*/
+		//brain->RemoveAllSubgoals();
 	}
 }
 
