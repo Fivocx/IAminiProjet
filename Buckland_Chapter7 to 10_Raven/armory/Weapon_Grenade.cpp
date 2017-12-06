@@ -42,7 +42,7 @@ Weapon_Grenade::Weapon_Grenade(Raven_Bot * owner):Raven_Weapon(type_grenade,
 
 inline void Weapon_Grenade::ShootAt(Vector2D pos)
 {
-	if (isReadyForNextShot())
+	if (isReadyForNextShot() && m_iNumRoundsLeft > 0)
 	{
 		//Fire in the hole!
 		m_pOwner->GetWorld()->AddGrenade(m_pOwner, pos);
@@ -71,7 +71,7 @@ double Weapon_Grenade::GetDesirability(double DistToTarget, double Perpendicular
 	{
 		//fuzzify distance and amount of ammo
 		m_FuzzyModule.Fuzzify("DistToTarget", DistToTarget);
-		m_FuzzyModule.Fuzzify("AmmoStatus", (double)m_iNumRoundsLeft);
+		m_FuzzyModule.Fuzzify("AmmoStatus", min((double)m_iNumRoundsLeft,100));
 
 		m_dLastDesirabilityScore = m_FuzzyModule.DeFuzzify("Desirability", FuzzyModule::max_av);
 	}
