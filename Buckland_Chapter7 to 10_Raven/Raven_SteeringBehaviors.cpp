@@ -26,6 +26,7 @@ Raven_Steering::Raven_Steering(Raven_Game* world, Raven_Bot* agent):
              m_pRaven_Bot(agent),
              m_iFlags(0),
              m_dWeightSeparation(script->GetDouble("SeparationWeight")),
+			 m_dWeightCohesion(script->GetDouble("CohesionWeight")),
              m_dWeightWander(script->GetDouble("WanderWeight")),
              m_dWeightWallAvoidance(script->GetDouble("WallAvoidanceWeight")),
              m_dViewDistance(script->GetDouble("ViewDistance")),
@@ -166,9 +167,9 @@ Vector2D Raven_Steering::CalculatePrioritized()
   //these next three can be combined for flocking behavior (wander is
   //also a good behavior to add into this mix)
 
-    if (On(separation))
+    if (On(cohesion))
     {
-      force = Separation(m_pWorld->GetAllBots()) * m_dWeightSeparation;
+      force = Cohesion(m_pWorld->GetAllBots()) * m_dWeightCohesion;
 
       if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
     }
@@ -401,6 +402,26 @@ Vector2D Raven_Steering::Separation(const std::list<Raven_Bot*>& neighbors)
   }
 
   return SteeringForce;
+}
+
+Vector2D Raven_Steering::Cohesion(const std::list<Raven_Bot*>& neighbors)
+{
+	//iterate through all the neighbors and calculate the vector from the
+	Vector2D SteeringForce = Vector2D(0,0);
+	int count = 0;
+	std::list<Raven_Bot*>::const_iterator it = neighbors.begin();
+	for (it; it != neighbors.end(); ++it)
+	{
+
+		if (*it != m_pRaven_Bot && m_pRaven_Bot->SameTeam(*it))
+		{
+			SteeringForce += (*it)->Pos();
+			count++;
+		}
+	}
+	SteeringForce =  (SteeringForce / (double)count) - m_pRaven_Bot->Pos();
+
+	return SteeringForce;
 }
 
 

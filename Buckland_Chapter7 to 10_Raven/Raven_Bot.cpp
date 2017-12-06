@@ -72,6 +72,15 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreE
   m_pTriggerTestRegulator = new Regulator(script->GetDouble("Bot_TriggerUpdateFreq"));
   m_pVisionUpdateRegulator = new Regulator(script->GetDouble("Bot_VisionUpdateFreq"));
 
+
+
+  Healer_Bot* child = dynamic_cast<Healer_Bot*>(this);
+if(child != nullptr)
+	SetGoalPriority(child->HealerGoalsPriority);
+else
+	SetGoalPriority(GoalsPriority);
+
+
   //create the goal queue
   m_pBrain = new Goal_Think(this);
 
@@ -89,6 +98,12 @@ Raven_Bot::Raven_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreE
 
   m_pSensoryMem = new Raven_SensoryMemory(this, script->GetDouble("Bot_MemorySpan"));
   MovingEntity::Update();
+
+
+
+
+
+
 }
 
 //-------------------------------- dtor ---------------------------------------
@@ -353,6 +368,13 @@ void Raven_Bot::ReduceHealth(unsigned int val)
 
   if (m_iHealth <= 0)
   {
+	  for (unsigned i = 0; i < 14; ++i)
+	  {
+		  Raven_Weapon* w = m_pWeaponSys->GetWeaponFromInventory(i);
+		  if (w)
+			  m_pWorld->SpawnLootTeam1->AddWeapon(w);
+	  }
+	m_pWeaponSys->Reset();
     SetDead();
   }
 

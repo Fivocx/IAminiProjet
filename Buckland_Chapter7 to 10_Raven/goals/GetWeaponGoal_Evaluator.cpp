@@ -16,6 +16,8 @@
 //-----------------------------------------------------------------------------
 double GetWeaponGoal_Evaluator::CalculateDesirability(Raven_Bot* pBot)
 {
+
+
   //grab the distance to the closest instance of the weapon type
   double Distance = Raven_Feature::DistanceToItem(pBot, m_iWeaponType);
 

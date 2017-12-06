@@ -56,6 +56,7 @@ private:
     arrive             = 0x00008,
     wander             = 0x00010,
     separation         = 0x00040,
+	cohesion		   = 0x00080,
     wall_avoidance     = 0x00200,
   };
 
@@ -100,6 +101,7 @@ private:
   //multipliers. These can be adjusted to effect strength of the  
   //appropriate behavior.
   double        m_dWeightSeparation;
+  double        m_dWeightCohesion;
   double        m_dWeightWander;
   double        m_dWeightWallAvoidance;
   double        m_dWeightSeek;
@@ -162,7 +164,7 @@ private:
   
   Vector2D Separation(const std::list<Raven_Bot*> &agents);
 
-
+  Vector2D Cohesion(const std::list<Raven_Bot*> &agents);
     /* .......................................................
 
                        END BEHAVIOR DECLARATIONS
@@ -207,18 +209,21 @@ public:
   void ArriveOn(){m_iFlags |= arrive;}
   void WanderOn(){m_iFlags |= wander;}
   void SeparationOn(){m_iFlags |= separation;}
+  void CohesionOn() { m_iFlags |= cohesion; }
   void WallAvoidanceOn(){m_iFlags |= wall_avoidance;}
 
   void SeekOff()  {if(On(seek))   m_iFlags ^=seek;}
   void ArriveOff(){if(On(arrive)) m_iFlags ^=arrive;}
   void WanderOff(){if(On(wander)) m_iFlags ^=wander;}
   void SeparationOff(){if(On(separation)) m_iFlags ^=separation;}
+  void CohesionOff() { if (On(cohesion)) m_iFlags ^= cohesion; }
   void WallAvoidanceOff(){if(On(wall_avoidance)) m_iFlags ^=wall_avoidance;}
 
   bool SeekIsOn(){return On(seek);}
   bool ArriveIsOn(){return On(arrive);}
   bool WanderIsOn(){return On(wander);}
   bool SeparationIsOn(){return On(separation);}
+  bool CohesionIsOn() { return On(cohesion); }
   bool WallAvoidanceIsOn(){return On(wall_avoidance);}
 
   const std::vector<Vector2D>& GetFeelers()const{return m_Feelers;}

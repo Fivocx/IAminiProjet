@@ -25,6 +25,7 @@
 #include "game/EntityFunctionTemplates.h"
 #include "Raven_Bot.h"
 #include "navigation/pathmanager.h"
+#include "Trigger_SpawnLoot.h"
 
 
 class BaseGameEntity;
@@ -158,13 +159,21 @@ public:
   Raven_Bot*  PossessedBot()const{return m_pSelectedBot;}
   void        ChangeWeaponOfPossessedBot(unsigned int weapon)const;
 
+  Trigger_SpawnLoot* SpawnLootTeam1;
+  Trigger_SpawnLoot* SpawnLootTeam2;
   
   const Raven_Map* const                   GetMap()const{return m_pMap;}
   Raven_Map* const                         GetMap(){return m_pMap;}
   const std::list<Raven_Bot*>&             GetAllBots()const{return m_Bots;}
   PathManager<Raven_PathPlanner>* const    GetPathManager(){return m_pPathManager;}
   int                                      GetNumBots()const{return m_Bots.size();}
-
+  Trigger_SpawnLoot*					   GetSpawnLoot(bool team2)const
+  {
+	  if (team2)
+		  return SpawnLootTeam2;
+	  else
+		  return SpawnLootTeam1;
+  }
   
   void  TagRaven_BotsWithinViewRange(BaseGameEntity* pRaven_Bot, double range)
               {TagNeighbors(pRaven_Bot, m_Bots, range);}  

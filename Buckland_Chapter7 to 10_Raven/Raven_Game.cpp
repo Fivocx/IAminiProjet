@@ -305,9 +305,13 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
     rb->GetSteering()->SeparationOn();
 
     m_Bots.push_back(rb);
+	
+	SpawnLootTeam1 = m_pMap->AddSpawnLoot(false);
+	SpawnLootTeam2 = m_pMap->AddSpawnLoot(true);
 
     //register the bot with the entity manager
     EntityMgr->RegisterEntity(rb);
+
 
     
 #ifdef LOG_CREATIONAL_STUFF

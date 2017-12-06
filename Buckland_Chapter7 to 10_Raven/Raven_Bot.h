@@ -40,7 +40,6 @@ class Raven_Bot : public MovingEntity
 private:
 	enum Status { alive, dead, spawning };
 	bool equipe2;
-
 protected:
 
 	//this is the minimum amount of time a bot needs to see an opponent before
@@ -290,7 +289,32 @@ public:
 	}
 	unsigned int GetWeaponType();
 
+	void SetGoalPriority(double goals[8])
+	{
+		for (int i =0; i < 8; i++)
+		{
+			GoalsPriority[i] = goals[i];
+		}
+	}
+
+
+	double GetGoalPriority(unsigned goal)
+	{
+		return GoalsPriority[goal];
+	}
+
+	double GoalsPriority[8] = {
+		0.8,	//HealthBias,
+		0.8,	//ShotgunBias,
+		1,	//RocketLauncherBias,
+		0.8,	//RailgunBias,
+		1,	//GrenadeBias,
+		0.5,	//ExploreBias,
+		0.8,	//AttackBias,
+		0.8 };	//AttackLeaderBias,
 };
+
+
 
 
 #endif

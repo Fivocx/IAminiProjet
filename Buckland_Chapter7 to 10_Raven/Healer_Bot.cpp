@@ -27,7 +27,9 @@
 
 Healer_Bot::Healer_Bot(Raven_Game* world, Vector2D pos, bool isleader, bool autreEquipe, Raven_Bot* leaderPt)
 	:Raven_Bot(world, pos, isleader, autreEquipe, leaderPt)
-{}
+{
+
+}
 
 
 Healer_Bot::~Healer_Bot()

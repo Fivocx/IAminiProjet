@@ -153,13 +153,14 @@ Trigger_SpawnLoot* Raven_Map::AddSpawnLoot(bool team2)
 	int nodeffs;
 	if (team2)
 	{
-		pos = GetSpawnPoints().at(1) - Vector2D(15, 0);
-		nodeffs = 312;
+		pos = GetSpawnPoints().at(0) + Vector2D(15,0);
+		nodeffs = 310;
 	}
 	else
-	{	
-		pos = GetSpawnPoints().at(0) + Vector2D(15, 0);
-		nodeffs = 310;
+	{
+		
+		pos = GetSpawnPoints().at(1) - Vector2D(15, 0);
+		nodeffs = 312;
 	}
 
 	Trigger_SpawnLoot* wg = new Trigger_SpawnLoot(nodeffs, pos);

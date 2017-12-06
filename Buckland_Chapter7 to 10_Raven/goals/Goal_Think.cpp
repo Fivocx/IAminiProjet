@@ -29,14 +29,14 @@ Goal_Think::Goal_Think(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_thi
   const double LowRangeOfBias = 0.5;
   const double HighRangeOfBias = 1.5;
 
-  double HealthBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
-  double ShotgunBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
-  double RocketLauncherBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
-  double RailgunBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
-  double GrenadeBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
-  double ExploreBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
-  double AttackBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
-  double AttackLeaderBias = RandInRange(LowRangeOfBias, HighRangeOfBias);
+  double HealthBias = RandInRange(LowRangeOfBias, HighRangeOfBias)			*m_pOwner->GetGoalPriority(0);
+  double ShotgunBias = RandInRange(LowRangeOfBias, HighRangeOfBias)			* m_pOwner->GetGoalPriority(1);
+  double RocketLauncherBias = RandInRange(LowRangeOfBias, HighRangeOfBias)	* m_pOwner->GetGoalPriority(2);
+  double RailgunBias = RandInRange(LowRangeOfBias, HighRangeOfBias)			* m_pOwner->GetGoalPriority(3);
+  double GrenadeBias = RandInRange(LowRangeOfBias, HighRangeOfBias)			* m_pOwner->GetGoalPriority(4);
+  double ExploreBias = RandInRange(LowRangeOfBias, HighRangeOfBias)			* m_pOwner->GetGoalPriority(5);
+  double AttackBias = RandInRange(LowRangeOfBias, HighRangeOfBias)			* m_pOwner->GetGoalPriority(6);
+  double AttackLeaderBias = RandInRange(LowRangeOfBias, HighRangeOfBias)	* m_pOwner->GetGoalPriority(7);
 
   //create the evaluator objects
   m_Evaluators.push_back(new GetHealthGoal_Evaluator(HealthBias));

@@ -215,10 +215,11 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-     <ClCompile Include="armory\Projectile_Grenade.cpp" />
+    <ClCompile Include="armory\Projectile_Grenade.cpp" />
     <ClCompile Include="armory\Weapon_Grenade.cpp" />
     <ClCompile Include="AttackLeaderTargetGoal_Evaluator.cpp" />
     <ClCompile Include="Goal_AttackLeaderTarget.cpp" />
+    <ClCompile Include="Goal_HealAlly.cpp" />
     <ClCompile Include="Healer_Bot.cpp" />
     <ClCompile Include="main.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -536,6 +537,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='boundschecker|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="Trigger_SpawnLoot.cpp" />
     <ClCompile Include="Weapon_HealingRayGun.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -543,6 +545,7 @@
     <ClInclude Include="armory\Weapon_Grenade.h" />
     <ClInclude Include="AttackLeaderTargetGoal_Evaluator.h" />
     <ClInclude Include="Goal_AttackLeaderTarget.h" />
+    <ClInclude Include="Goal_HealAlly.h" />
     <ClInclude Include="Healer_Bot.h" />
     <ClInclude Include="Projectile_HealingRay.h" />
     <ClInclude Include="Raven_Bot.h" />
@@ -657,6 +660,7 @@
     <ClInclude Include="..\Common\2D\Wall2D.h" />
     <ClInclude Include="..\Common\2D\WallIntersectionTests.h" />
     <ClInclude Include="..\Common\misc\WindowUtils.h" />
+    <ClInclude Include="Trigger_SpawnLoot.h" />
     <ClInclude Include="Weapon_HealingRayGun.h" />
   </ItemGroup>
   <ItemGroup>

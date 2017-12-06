@@ -27,7 +27,7 @@
 
 class BaseGameEntity;
 class Raven_Door;
-
+class Trigger_SpawnLoot;
 
 class Raven_Map
 {
@@ -88,7 +88,7 @@ private:
   void Clear();
   
 public:
-  
+	Trigger_SpawnLoot* AddSpawnLoot(bool team2);
   Raven_Map();  
   ~Raven_Map();
 

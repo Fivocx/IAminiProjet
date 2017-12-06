@@ -96,7 +96,7 @@ public:
   //If the bot already has a weapon of this type only the ammo is added. 
   //(called by the weapon giver-triggers to give a bot a weapon)
   void          AddWeapon(unsigned int weapon_type);
-
+  void			AddWeapon(Raven_Weapon* weapon);
   //changes the current weapon to one of the specified type (provided that type
   //is in the bot's possession)
   void          ChangeWeapon(unsigned int type);
@@ -118,6 +118,7 @@ public:
 
   void          RenderCurrentWeapon()const;
   void          RenderDesirabilities()const;
+  void          Reset();
 
 
 };

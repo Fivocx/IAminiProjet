@@ -107,7 +107,15 @@ void Raven_WeaponSystem::Initialize(unsigned int defaultWeapon)
 
 
 }
-
+void Raven_WeaponSystem::Reset()
+{
+		m_WeaponMap[type_blaster] = 0;
+		m_WeaponMap[type_shotgun] = 0;
+		m_WeaponMap[type_rail_gun] = 0;
+		m_WeaponMap[type_rocket_launcher] = 0;
+		m_WeaponMap[type_grenade] = 0;
+		m_WeaponMap[type_HealingRayGun] = 0;
+}
 //-------------------------------- SelectWeapon -------------------------------
 //
 //-----------------------------------------------------------------------------
@@ -133,6 +141,7 @@ void Raven_WeaponSystem::SelectWeapon()
       //distance to target and ammo remaining)
       if (curWeap->second)
       {
+		  TangentialSpeed = max(TangentialSpeed, 100);
 		  double score = curWeap->second->GetDesirability(DistToTarget, TangentialSpeed);
 
         //if it is the most desirable so far select it
@@ -203,6 +212,20 @@ void  Raven_WeaponSystem::AddWeapon(unsigned int weapon_type)
   }
 }
 
+void  Raven_WeaponSystem::AddWeapon(Raven_Weapon* weapon)
+{
+	Raven_Weapon* present = GetWeaponFromInventory(weapon->GetType());
+
+	if (present)
+	{
+		present->IncrementRounds(weapon->NumRoundsRemaining());
+		delete weapon;
+	}
+	else
+	{
+		m_WeaponMap[weapon->GetType()] = weapon;
+	}
+}
 
 //------------------------- GetWeaponFromInventory -------------------------------
 //

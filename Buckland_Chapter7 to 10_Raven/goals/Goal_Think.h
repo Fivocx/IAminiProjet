@@ -22,7 +22,6 @@
 class Goal_Think : public Goal_Composite<Raven_Bot>
 {
 private:
-  
   typedef std::vector<Goal_Evaluator*>   GoalEvaluators;
 
 private:
