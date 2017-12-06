@@ -215,6 +215,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+     <ClCompile Include="armory\Projectile_Grenade.cpp" />
+    <ClCompile Include="armory\Weapon_Grenade.cpp" />
     <ClCompile Include="AttackLeaderTargetGoal_Evaluator.cpp" />
     <ClCompile Include="Goal_AttackLeaderTarget.cpp" />
     <ClCompile Include="Healer_Bot.cpp" />
@@ -537,6 +539,8 @@
     <ClCompile Include="Weapon_HealingRayGun.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="armory\Projectile_Grenade.h" />
+    <ClInclude Include="armory\Weapon_Grenade.h" />
     <ClInclude Include="AttackLeaderTargetGoal_Evaluator.h" />
     <ClInclude Include="Goal_AttackLeaderTarget.h" />
     <ClInclude Include="Healer_Bot.h" />

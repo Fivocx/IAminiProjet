@@ -3,6 +3,7 @@
 #include "armory/Weapon_RailGun.h"
 #include "armory/Weapon_ShotGun.h"
 #include "armory/Weapon_Blaster.h"
+#include "armory\Weapon_Grenade.h"
 #include "Weapon_HealingRayGun.h"
 #include "Raven_Bot.h"
 #include "misc/utils.h"
@@ -81,6 +82,10 @@ void Raven_WeaponSystem::Initialize(unsigned int defaultWeapon)
 		  m_pCurrentWeapon = new HealingRayGun(m_pOwner);
 		  m_WeaponMap[type_HealingRayGun] = m_pCurrentWeapon;
 		  break;
+	  case type_grenade:
+		  m_pCurrentWeapon = new Weapon_Grenade(m_pOwner);
+		  m_WeaponMap[type_grenade] = m_pCurrentWeapon;
+		  break;
 	  default:
 		  break;
 	  }
@@ -94,6 +99,8 @@ void Raven_WeaponSystem::Initialize(unsigned int defaultWeapon)
 	  m_WeaponMap[type_rail_gun] = 0;
   if (defaultWeapon != type_rocket_launcher)
 	  m_WeaponMap[type_rocket_launcher] = 0;
+  if (defaultWeapon != type_grenade)
+	  m_WeaponMap[type_grenade] = 0;
   if (defaultWeapon != type_HealingRayGun)
 	  m_WeaponMap[type_HealingRayGun] = 0;
 
@@ -171,6 +178,10 @@ void  Raven_WeaponSystem::AddWeapon(unsigned int weapon_type)
   case type_rocket_launcher:
 
     w = new RocketLauncher(m_pOwner); break;
+
+  case type_grenade:
+
+	  w = new Weapon_Grenade(m_pOwner); break;
 
   }//end switch
   
@@ -395,7 +406,7 @@ double Raven_WeaponSystem::SetAccuracy()
 	double shotsFiredRecently =  m_pOwner->GetAmountOfShotFiredSince(RecoilTimeSpawn);
 	double TangencialSpeed = (m_pOwner->GetTargetSys()->GetTarget() != nullptr ? m_pOwner->RelativeTangencialSpeed(m_pOwner->GetTargetBot()) : 0);
 
-	m_FuzzyModule.Fuzzify("TangencialSpeed", TangencialSpeed);
+	m_FuzzyModule.Fuzzify("TangencialSpeed", min(TangencialSpeed, 100));
 	m_FuzzyModule.Fuzzify("ShotsFiredRecently", shotsFiredRecently);
 
 	m_dAimAccuracy = m_FuzzyModule.DeFuzzify("Accuracy", FuzzyModule::max_av);

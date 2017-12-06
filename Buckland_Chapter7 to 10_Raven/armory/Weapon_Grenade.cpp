@@ -61,7 +61,7 @@ inline void Weapon_Grenade::ShootAt(Vector2D pos)
 //
 //-----------------------------------------------------------------------------
 
-double Weapon_Grenade::GetDesirability(double DistToTarget)
+double Weapon_Grenade::GetDesirability(double DistToTarget, double PerpendicularSpeed)
 {
 	if (m_iNumRoundsLeft == 0)
 	{

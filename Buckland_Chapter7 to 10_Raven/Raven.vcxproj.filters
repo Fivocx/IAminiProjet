@@ -283,6 +283,12 @@
     <ClCompile Include="Weapon_HealingRayGun.cpp">
       <Filter>Game\weapons &amp; projectiles\weapons</Filter>
     </ClCompile>
+    <ClCompile Include="armory\Projectile_Grenade.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Weapon_Grenade.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -634,6 +640,12 @@
       <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
     </ClInclude>
     <ClInclude Include="Weapon_HealingRayGun.h">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Projectile_Grenade.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Weapon_Grenade.h">
       <Filter>Game\weapons &amp; projectiles\weapons</Filter>
     </ClInclude>
   </ItemGroup>

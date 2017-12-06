@@ -66,6 +66,10 @@ inline std::string GetNameOfType(int w)
     
     s =  "rocket_launcher"; break;
 
+  case type_grenade:
+
+	  s = "grenade"; break;
+
   case type_shotgun:
     
     s =  "shotgun"; break;
@@ -85,11 +89,6 @@ inline std::string GetNameOfType(int w)
   case type_door_trigger:
     
     s =  "door_trigger"; break;
-
-  case type_grenade:
-
-	  s = "grenade"; break;
-
 
   default:
 

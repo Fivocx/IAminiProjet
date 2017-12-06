@@ -63,7 +63,7 @@ inline void Blaster::ShootAt(Vector2D pos)
 double Blaster::GetDesirability(double DistToTarget, double TangentialSpeed)
 {
   //fuzzify distance and amount of ammo
-  m_FuzzyModule.Fuzzify("TangencialSpeed", TangentialSpeed);
+  m_FuzzyModule.Fuzzify("TangencialSpeed", min(TangentialSpeed, 100));
   m_FuzzyModule.Fuzzify("DistToTarget", DistToTarget);
 
   m_dLastDesirabilityScore = m_FuzzyModule.DeFuzzify("Desirability", FuzzyModule::max_av);
