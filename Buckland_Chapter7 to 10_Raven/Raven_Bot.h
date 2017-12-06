@@ -18,6 +18,7 @@
 #include "misc/utils.h"
 #include "Raven_TargetingSystem.h"
 #include "time/crudetimer.h"
+#include "goals/Goal_SeekToPosition.h"
 
 
 class Raven_PathPlanner;
@@ -28,6 +29,7 @@ class Raven_Weapon;
 struct Telegram;
 class Raven_Bot;
 class Goal_Think;
+class Goal_SeekToPosition;
 class Raven_WeaponSystem;
 class Raven_SensoryMemory;
 
@@ -146,6 +148,7 @@ public:
 
 	//the usual suspects
 	bool                               m_bPossessed;
+	Goal_SeekToPosition* seek;
 	void         Render();
 	void         Update();
 	bool         HandleMessage(const Telegram& msg);

@@ -49,6 +49,7 @@ public:
   //top level goal types
   void AddGoal_MoveToPosition(Vector2D pos);
   void AddGoal_GetItem(unsigned int ItemType);
+  void switchGoal_MoveToPosition(Vector2D pos);
   void AddGoal_Explore();
   void AddGoal_AttackTarget();
   void AddGoal_AttackLeaderTarget();

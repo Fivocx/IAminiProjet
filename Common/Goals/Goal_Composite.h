@@ -83,7 +83,7 @@ void Goal_Composite<entity_type>::RemoveAllSubgoals()
 	delete m_SubGoals[n];
 
 	}*/
-	try {
+
 		for (SubgoalList::iterator it = m_SubGoals.begin();
 			it != m_SubGoals.end();
 			++it)
@@ -92,11 +92,14 @@ void Goal_Composite<entity_type>::RemoveAllSubgoals()
 
 			delete *it;
 		}
-	}
-	catch (...) {
 		m_SubGoals.clear();
-	}
-	m_SubGoals.clear();
+
+	/*while (m_SubGoals.size() != 0) {
+		m_SubGoals.front()->Terminate();
+		m_SubGoals.pop_front();
+	}*/
+	//m_SubGoals.clear();
+
 
 }
  
@@ -174,6 +177,7 @@ bool Goal_Composite<entity_type>::ForwardMessageToFrontMostSubgoal(const Telegra
 template <class entity_type>
 void  Goal_Composite<entity_type>::RenderAtPos(Vector2D& pos, TypeToString* tts)const
 {
+	
   Goal<entity_type>::RenderAtPos(pos, tts);
 
   pos.x += 10;
