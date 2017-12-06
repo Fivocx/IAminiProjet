@@ -62,7 +62,7 @@ inline void RailGun::ShootAt(Vector2D pos)
 //---------------------------- Desirability -----------------------------------
 //
 //-----------------------------------------------------------------------------
-double RailGun::GetDesirability(double DistToTarget, double PerpendicularSpeed)
+double RailGun::GetDesirability(double DistToTarget, double TangentialSpeed)
 {
   if (m_iNumRoundsLeft == 0)
   {
@@ -71,7 +71,7 @@ double RailGun::GetDesirability(double DistToTarget, double PerpendicularSpeed)
   else
   {
     //fuzzify distance and amount of ammo
-	 m_FuzzyModule.Fuzzify("TangencialSpeed", PerpendicularSpeed);
+	 m_FuzzyModule.Fuzzify("TangencialSpeed", min(TangentialSpeed, 100));
     m_FuzzyModule.Fuzzify("DistanceToTarget", DistToTarget);
     m_FuzzyModule.Fuzzify("AmmoStatus", (double)m_iNumRoundsLeft);
 

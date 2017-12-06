@@ -88,50 +88,86 @@ void Raven_SensoryMemory::UpdateVision()
   for (curBot = bots.begin(); curBot!=bots.end(); ++curBot)
   {
     //make sure the bot being examined is not this bot
-    if (m_pOwner != *curBot)
-    {
-      //make sure it is part of the memory map
-      MakeNewRecordIfNotAlreadyPresent(*curBot);
+	  if (m_pOwner != *curBot)
+	  {
+		  //make sure it is part of the memory map
+		  MakeNewRecordIfNotAlreadyPresent(*curBot);
 
-      //get a reference to this bot's data
-      MemoryRecord& info = m_MemoryMap[*curBot];
+		  //get a reference to this bot's data
+		  MemoryRecord& info = m_MemoryMap[*curBot];
 
-      //test if there is LOS between bots 
-      if (m_pOwner->GetWorld()->isLOSOkay(m_pOwner->Pos(), (*curBot)->Pos()))
-      {
-        info.bShootable = true;
+		  bool isAlly = m_pOwner->SameTeam(*curBot);
 
-              //test if the bot is within FOV
-        if (isSecondInFOVOfFirst(m_pOwner->Pos(),
-                                 m_pOwner->Facing(),
-                                 (*curBot)->Pos(),
-                                  m_pOwner->FieldOfView()))
-        {
-          info.fTimeLastSensed     = Clock->GetCurrentTime();
-          info.vLastSensedPosition = (*curBot)->Pos();
-          info.fTimeLastVisible    = Clock->GetCurrentTime();
+		  if (isAlly)
+			  AskAllyLocation(*curBot);
+		  else
+		  {
+			  //test if there is LOS between bots 
+			  if (m_pOwner->GetWorld()->isLOSOkay(m_pOwner->Pos(), (*curBot)->Pos()))
+			  {
+				  info.bShootable = true;
 
-          if (info.bWithinFOV == false)
-          {
-            info.bWithinFOV           = true;
-            info.fTimeBecameVisible    = info.fTimeLastSensed;
-          
-          }
-        }
+				  //test if the bot is within FOV
+				  if (isSecondInFOVOfFirst(m_pOwner->Pos(),
+					  m_pOwner->Facing(),
+					  (*curBot)->Pos(),
+					  m_pOwner->FieldOfView())
+					  )
+				  {
+					  info.fTimeLastSensed = Clock->GetCurrentTime();
+					  info.vLastSensedPosition = (*curBot)->Pos();
+					  info.fTimeLastVisible = Clock->GetCurrentTime();
 
-        else
-        {
-          info.bWithinFOV = false;         
-        }
-      }
 
-      else
-      {
-        info.bShootable = false;
-        info.bWithinFOV = false;
-      }
-    }
-  }//next bot
+					  if (info.bWithinFOV == false)
+					  {
+						  info.bWithinFOV = true;
+						  info.fTimeBecameVisible = info.fTimeLastSensed;
+
+					  }
+				  }
+
+				  else
+				  {
+					  info.bWithinFOV = false;
+				  }
+			  }
+
+			  else
+			  {
+				  info.bShootable = false;
+				  info.bWithinFOV = false;
+			  }
+		  }
+	  }
+  }
+	
+}
+
+
+void Raven_SensoryMemory::AskAllyLocation(Raven_Bot* Ally)
+{
+		MakeNewRecordIfNotAlreadyPresent(Ally);
+		MemoryRecord& info = m_MemoryMap[Ally];
+
+		info.fTimeLastSensed = Clock->GetCurrentTime();
+		info.vLastSensedPosition = Ally->Pos();
+
+		//test if the bot is within FOV
+		if (m_pOwner->GetWorld()->isLOSOkay(m_pOwner->Pos(), Ally->Pos()))
+		{
+			info.bShootable = true;
+			info.bWithinFOV = true;
+			info.fTimeLastVisible = Clock->GetCurrentTime();
+			info.fTimeBecameVisible = info.fTimeLastSensed;
+
+		}
+		else
+		{
+			info.bWithinFOV = false;
+			info.bShootable = false;
+		}
+	
 }
 
 
@@ -142,22 +178,51 @@ void Raven_SensoryMemory::UpdateVision()
 std::list<Raven_Bot*> 
 Raven_SensoryMemory::GetListOfRecentlySensedOpponents()const
 {
-  //this will store all the opponents the bot can remember
-  std::list<Raven_Bot*> opponents;
+	std::list<Raven_Bot*> units = GetListOfRecentlySensedUnits();
+	std::list<Raven_Bot*> Opponents;
 
-  double CurrentTime = Clock->GetCurrentTime();
+	std::list<Raven_Bot*>::const_iterator curRecord = units.begin();
+	for (curRecord; curRecord != units.end(); ++curRecord)
+	{
+		if ((*curRecord)->SameTeam(m_pOwner) == false)
+			Opponents.push_back(*curRecord);
+	}
+	return Opponents;
+}
 
-  MemoryMap::const_iterator curRecord = m_MemoryMap.begin();
-  for (curRecord; curRecord!=m_MemoryMap.end(); ++curRecord)
-  {
-    //if this bot has been updated in the memory recently, add to list
-    if ( (CurrentTime - curRecord->second.fTimeLastSensed) <= m_dMemorySpan)
-    {
-      opponents.push_back(curRecord->first);
-    }
-  }
+std::list<Raven_Bot*>
+Raven_SensoryMemory::GetListOfRecentlySensedAllies()const
+{
+	std::list<Raven_Bot*> units = GetListOfRecentlySensedUnits();
+	std::list<Raven_Bot*> Allies;
 
-  return opponents;
+	std::list<Raven_Bot*>::const_iterator curRecord = units.begin();
+	for (curRecord; curRecord != units.end(); ++curRecord)
+	{
+		if ((*curRecord)->SameTeam(m_pOwner) == true)
+			Allies.push_back(*curRecord);
+	}
+	return Allies;
+}
+
+std::list<Raven_Bot*>
+Raven_SensoryMemory::GetListOfRecentlySensedUnits()const
+{
+	//this will store all the opponents the bot can remember
+	std::list<Raven_Bot*> opponents;
+
+	double CurrentTime = Clock->GetCurrentTime();
+
+	MemoryMap::const_iterator curRecord = m_MemoryMap.begin();
+	for (curRecord; curRecord != m_MemoryMap.end(); ++curRecord)
+	{
+		//if this bot has been updated in the memory recently, add to list
+		if ((CurrentTime - curRecord->second.fTimeLastSensed) <= m_dMemorySpan)
+		{
+			opponents.push_back(curRecord->first);
+		}
+	}
+	return opponents;
 }
 
 //----------------------------- isOpponentShootable --------------------------------
@@ -278,4 +343,39 @@ void  Raven_SensoryMemory::RenderBoxesAroundRecentlySensed()const
     gdi->Line(p.x-b, p.y+b, p.x-b, p.y-b);
   }
 
+}
+
+void Raven_SensoryMemory::CallEnemyToAllies(Raven_Bot* spottedBot)
+{
+	const std::list<Raven_Bot*>& bots = GetListOfRecentlySensedAllies();
+
+	std::list<Raven_Bot*>::const_iterator curBot;
+
+	for (curBot = bots.begin(); curBot != bots.end(); ++curBot)
+	{
+		if (m_pOwner != *curBot)
+		{
+			MakeNewRecordIfNotAlreadyPresent(spottedBot);
+			MemoryRecord& info = (*curBot)->GetSensoryMem()->m_MemoryMap[spottedBot];
+
+		
+			info.fTimeLastSensed = Clock->GetCurrentTime();
+			info.vLastSensedPosition = spottedBot->Pos();
+
+			//test if the bot is within FOV
+			if ((*curBot)->GetWorld()->isLOSOkay((*curBot)->Pos(), spottedBot->Pos()))
+			{
+				info.bShootable = true;
+				info.bWithinFOV = true;
+				info.fTimeLastVisible = Clock->GetCurrentTime();
+				info.fTimeBecameVisible = info.fTimeLastSensed;
+
+			}
+			else
+			{
+				info.bWithinFOV = false;
+				info.bShootable = false;
+			}
+		}
+	}//next bot
 }
